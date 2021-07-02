@@ -587,4 +587,4 @@ import "time"
 	"ad_dev"//[degrees] Variability of axis of dialation (0-360)
 } | {
 	"rhohv_dev"//ρhv [0-1] ρhv variation
-} |{"VRAD"} |{"WRAD"}
+}
