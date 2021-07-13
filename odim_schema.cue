@@ -1,41 +1,87 @@
-import "time"
+import (
+	"time"
+	"list"
+)
 
-#Root: {
-	Conventions: #OdimVersions
-	groups: [...#Group]
-	what:  #TopWhat //it is unclear if any of the top-level what/where/how groups are required
-	how:   #How
-	where: #Where
+#_Root: {
+	[name=#DatasetName]: #DatasetGroup
+	what:                #TopWhat //it is unclear if any of the top-level what/where/how groups are required
+	how:                 #How
+	where:               #Where
 }
 
+#RootV23: {
+	#_Root
+	Conventions: "ODIM_H5/V2_3"
+	what: version: "H5rad 2.3"
+	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV23 //could this appear at other levels? quality: what: quantity??
+}
+
+#RootV22: {
+	#_Root
+	Conventions: "ODIM_H5/V2_2"
+	what: version: "H5rad 2.2"
+	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV22 //could this appear at other levels
+}
+
+#RootV21: {
+	#_Root
+	Conventions: "ODIM_H5/V2_1"
+	what: version: "H5rad 2.1"
+	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV21     //could this appear at other levels
+	[name=#DatasetName]: how: azangles:  #sequenceOfPairs // should this be done more elaborately?
+	[name=#DatasetName]: how: aztimes:   #sequenceOfPairs
+}
+
+#RootV20: {
+	#_Root
+	Conventions: "ODIM_H5/V2_0"
+	what: version: "H5rad 2.0"
+	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV20     //could this appear at other levels
+	[name=#DatasetName]: how: azangles:  #sequenceOfPairs // should this be done more elaborately?
+	[name=#DatasetName]: how: aztimes:   #sequenceOfPairs
+}
+
+#DatasetName: =~ "dataset[0-9]{1,3}" // 1000 are quite a lot, but hey, why not??
+#DataName: =~ "data[0-9]{1,3}"
+#QualityName: =~ "quality[0-9]{1,3}"
+
 #Group: {
-	groups?: [...#Group]
-	data:   #Data
 	what?:  #DatasetWhat //it is unclear if any of the top-level what/where/how groups are required
 	how?:   #How
 	where?: #Where
 }
 
-#Data: {
-	CLASS:         "IMAGE"
-	IMAGE_VERSION: "1.2"
+#DatasetGroup: {
+	#Group
+	[name=#DataName]:    #DataGroup
+	[name=#QualityName]: #DataGroup
 }
 
-#OdimVersions: "ODIM_H5/V2_0" | "ODIM_H5/V2_1" | "ODIM_H5/V2_2" | "ODIM_H5/V2_3"
+#DataGroup: {
+	#Group
 
-#H5rad: "H5rad 2.0" | "H5rad 2.1" | "H5rad 2.2" | "H5rad 2.3" //this is kinda silly; what does it even mean?! why is it here?
+	[name=#QualityName]: #DataGroup //this allow for infinitely nested quality groups... YOLO
+	data?:               #Data
+	palette?:            _ // I have no idea what the structure is of this item
+	legend?:             _ // I have no idea what the structure is of this item
+}
+
+#Data: close({
+	CLASS:         "IMAGE"
+	IMAGE_VERSION: "1.2"
+})
 
 #Date: string & time.Format("20060102")
 #Time: string & time.Format("150405")
 
 #TopWhat: {
 	//mandatory Top-level what attributes: table 1
-	object:  #Objects
-	version: #H5rad
-	date:    #Date
-	time:    #Time
-	source:  string
-	//TODO source validation via table 3
+	object: #Objects
+	date:   #Date
+	time:   #Time
+	source: string
+	//TODO source validation via table 3??
 }
 
 #DatasetWhat: {
@@ -43,7 +89,6 @@ import "time"
 	prodname?: string   //- Product name
 	//TODO prodpar
 	prodpar?:   string    // - According to Table 16 for products. Only used for cartesian products.
-	quantity?:  #Quantity //- According to Table 17
 	startdate?: #Date     //Starting YYYYMMDD Year, Month, and Day for the product
 	starttime?: #Time     //Hour, Minute, and Second for the product
 	enddate?:   #Date     // Year, Month, and Day for the product
@@ -106,7 +151,8 @@ import "time"
 	LR_lat: float      //Latitude of the lower right corner of the lower right pixel
 }
 
-#simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float
+#simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float //also some sequences
+#sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
 
 //table 6
 #CrossSectionWhere: {
@@ -132,6 +178,7 @@ import "time"
 //table 7
 #VerticalWhere: {
 	#TopLevelPolarWhere
+
 	//Height of the centre of the antenna in meters above mean sea level.
 	interval:  float    //Vertical distance (m) between height intervals, or 0.0 if variable
 	minheight: float    //Minimum height in meters above mean sea level
@@ -141,7 +188,7 @@ import "time"
 
 #sequence: string
 
-//nodes are the radar names... the enum is too large to contemplate for now
+//nodes are the radar names... the enum is too large, and not bounded, I will not contemplate it currently
 #sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 
 #Software: string //it is too open
@@ -335,7 +382,7 @@ import "time"
 } | {
 	"AVERAGE"//Average of all values
 } | {
-	"QAVERAGE"//Quality-weighted average
+	"QAVERAGE"//Quality-weighted average //TODO only V2.3
 } | {
 	"RANDOM"//Random
 } | {
@@ -345,7 +392,7 @@ import "time"
 } | {
 	"MAXIMUM"//Maximum value
 } | {
-	"QMAXIMUM"//Maximum quality
+	"QMAXIMUM"//Maximum quality //TODO only V2.3
 } | {
 	"DOMAIN"//User-defined compositing
 } | {
@@ -368,7 +415,7 @@ import "time"
 } | {
 	"AZIM"//Azimuthal object
 } | {
-	"ELEV"//Elevational object
+	"ELEV"//Elevational object //TODO from v2.2
 } | {
 	"IMAGE"//2-D cartesian image
 } | {
@@ -421,170 +468,480 @@ import "time"
 	"QUAL"//Quality metric
 }
 
-#Quantity: {
-	"TH"//Th [dBZ] Logged horizontally-polarized total (uncorrected) reflectivity factor
-} | {
-	"TV"//Tv [dBZ] Logged vertically-polarized total (uncorrected) reflectivity factor
-} | {
-	"DBZH"//Zh [dBZ] Logged horizontally-polarized (corrected) reflectivity factor
-} | {
-	"DBZV"//Zv [dBZ] Logged vertically-polarized (corrected) reflectivity factor
-} | {
-	"ZDR"//ZDR [dB] Logged differential reflectivity
-} | {
-	"UZDR"//ZDR [dB] Logged differential reflectivity that has not been subject to a Doppler filter
-} | {
-	"RHOHV"//ρhv [0-1] Correlation between Zh and Zv
-} | {
-	"URHOHV"//ρhv [0-1] Correlation between Zh and Zv that has not been subject to any filter or correction
-} | {
-	"LDR"//Ldr [dB] Linear depolarization ratio
-} | {
-	"ULDR"//Ldr [dB] Linear depolarization ratio that has not been subject to a Doppler filter
-} | {
-	"PHIDP"//φdp [degrees] Differential phase
-} | {
-	"UPHIDP"//φdp [degrees] Differential phase that has not been subject to any filter or correction
-} | {
-	"PIA"//PIA [dB] Path Integrated Attenuation
-} | {
-	"KDP"//Kdp [degrees/km] Specific differential phase
-} | {
-	"UKDP"//Kdp [degrees/km] Specific differential phase that has not been subject to any filter or correction
-} | {
-	"SQIH"//SQIh [0-1] Signal quality index - horizontally-polarized
-} | {
-	"USQIH"//SQIh [0-1] Signal quality index - horizontally-polarized - that has not been subject to a Doppler filter
-} | {
-	"SQIV"//SQIv [0-1] Signal quality index - vertically-polarized
-} | {
-	"USQIV"//SQIv [0-1] Signal quality index - vertically-polarized - that has not been subject to a Doppler filter
-} | {
-	"SNRH"//SNRh [0-1] Normalized signal-to-noise ratio - horizontally-polarized. Marked for DEPRECATION.
-} | {
-	"SNRV"//SNRv [0-1] Normalized signal-to-noise ratio - vertically-polarized. Marked for DEPRECATION.
-} | {
-	"SNR"//SNR [dB] Signal-to-noise ratio
-} | {
-	"SNRHC"//SNRh,c [dB] Signal-to-noise ratio co-polar H
-} | {
-	"SNRHX"//SNRh,x [dB] Signal-to-noise ratio cross-polar H
-} | {
-	"SNRVC"//SNRv,c [dB] Signal-to-noise ratio co-polar V
-} | {
-	"SNRVX"//SNRv,x [dB] Signal to noise ratio cross polar V
-} | {
-	"CCORH"//CCh [dB] Clutter correction - horizontally-polarized
-} | {
-	"CCORV"//CCv [dB] Clutter correction - vertically-polarized
-} | {
-	"CPA"//CPA [0-1] Clutter phase alignment (0: low probability of clutter, 1: high probability of clutter)
-} | {
-	"RATE"//RR [mm/h] Rain rate
-} | {
-	"URATE"//URR [mm/h] Uncorrected rain rate
-} | {
-	"POR"//POR [0-1] Probability of rain (0: low probability, 1: high probability)
-} | {
-	"HI"//HI [dBZ] Hail intensity
-} | {
-	"HP"//HP [%] Hail probability. Marked for DEPRECATION.
-} | {
-	"POH"//POH [0-1] Probability of hail (0: low probability, 1: high probability)
-} | {
-	"POSH"//POSH [0-1] Probability of severe hail (0: low probability, 1: high probability)
-} | {
-	"MESH"//MESH [cm] Maximum expected severe hail size
-} | {
-	"ACRR"//RRaccum. [mm] Accumulated precipitation
-} | {
-	"HGHT"//H [km] Height above mean sea level
-} | {
-	"VIL"//VIL [kg/m2] Vertical Integrated Liquid water
-} | {
-	"VRADH"//Vrad,h [m/s] Radial velocity - horizontally-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT).
-} | {
-	"UVRADH"//Vrad,h [m/s] Radial velocity - horizontally-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT).
-} | {
-	"VRADV"//Vrad,v [m/s] Radial velocity - vertically-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT).
-} | {
-	"UVRADV"//Vrad,v [m/s] Radial velocity - vertically-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT).
-} | {
-	"VRADDH"//Vrad,d [m/s] Dealiased horizontally-polarized radial velocity
-} | {
-	"VRADDV"//Vrad,d [m/s] Dealiased vertically-polarized radial velocity
-} | {
-	"WRADH"//Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized
-} | {
-	"UWRADH"//Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized - that has not been subject to any filter or correction
-} | {
-	"WRADV"//Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized
-} | {
-	"UWRADV"//Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized - that has not been subject to any filter or correction
-} | {
-	"UWND"//U [m/s] Component of wind in x-direction
-} | {
-	"VWND"//V [m/s] Component of wind in y-direction
-} | {
-	"RSHR"//SHRr [m/s km] Radial shear
-} | {
-	"ASHR"//SHRa [m/s km] Azimuthal shear
-} | {
-	"CSHR"//SHRc [m/s km] Range-azimuthal shear
-} | {
-	"ESHR"//SHRe [m/s km] Elevation shear
-} | {
-	"OSHR"//SHRo [m/s km] Range-elevation shear
-} | {
-	"HSHR"//SHRh [m/s km] Horizontal shear
-} | {
-	"VSHR"//SHRv [m/s km] Vertical shear
-} | {
-	"TSHR"//SHRt [m/s km] Three-dimensional shear
-} | {
-	"PSPH"//PSP [dBm] Power spectrum peak - horizontally-polarized
-} | {
-	"PSPV"//PSP [dBm] Power spectrum peak - vertically-polarized
-} | {
-	"UPSPH"//PSP [dBm] Power spectrum peak - horizontally-polarized - that has not been subject to any filter or correction
-} | {
-	"UPSPV"//PSP [dBm] Power spectrum peak - vertically-polarized - that has not been subject to any filter or correction
-} | {
-	"BRDR"//0 or 1 1 denotes a border where data from two or more radars meet incomposites, otherwise 0
-} | {
-	"QIND"//Quality [0-1] Spatially analyzed quality indicator, according to OPERA II, normalized to between 0 (poorest quality) to 1 (best quality)
-} | {
-	"CLASS"//Classification Indicates that data are classified and that the classes are specified according to the associated legend object (Section 6.2) whichmust be present.
-} | {
-	"ff"//[m/s] Mean horizontal wind velocity
-} | {
-	"dd"//[degrees] Mean horizontal wind direction (degrees)
-} | {
-	"ff_dev"//[m/s] Velocity variability
-} | {
-	"dd_dev"//[m/s] Direction variability
-} | {
-	"n"//– Sample size. Marked for DEPRECATION.
-} | {
-	"DBZH_dev"//[dBZ] Variability of logged horizontally-polarized (corrected) reflectivity factor
-} | {
-	"DBZV_dev"//[dBZ] Variability of logged vertically-polarized (corrected) reflectivity factor
-} | {
-	"w"//[m/s] Vertical velocity (positive upwards)
-} | {
-	"w_dev"//[m/s] Vertical velocity variability
-} | {
-	"div"//[s−1] Divergence
-} | {
-	"div_dev"//[s−1] Divergence variation
-} | {
-	"def"//[s−1] Deformation
-} | {
-	"def_dev"//[s−1] Deformation variation
-} | {
-	"ad"//[degrees] Axis of dialation (0-360)
-} | {
-	"ad_dev"//[degrees] Variability of axis of dialation (0-360)
-} | {
-	"rhohv_dev"//ρhv [0-1] ρhv variation
-}
+#supportedVersions: "V20" | "V21" | "V22" | "V23"
+
+#Quantity: close({
+	name:        string
+	description: string
+	versions: [...#supportedVersions]
+})
+
+#Quantities: [...#Quantity]
+
+#Quantities: [
+	#Quantity & {
+		name:        "SQI"
+		description: "Signal quality index"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "dbz"
+		description: "[dBZ] Logged radar reflectivity factor"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "dbz_dev"
+		description: "[dBZ] Variability of logged radar reflectivity factor"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "z"
+		description: "[Z] Linear radar reflectivity factor"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "z_dev"
+		description: "[Z] Variability of linear radar reflectivity factor"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "chi2"
+		description: "Chi-square value of wind profile fit"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "rhohv"
+		description: "ρhv [0-1] Correlation between Zh and Zv"
+		versions: ["V20", "V21"]
+	},
+	#Quantity & {
+		name:        "VRAD"
+		description: "[m/s] Radial velocity"
+		versions: ["V20", "V21", "V22"]
+	},
+	#Quantity & {
+		name:        "WRAD"
+		description: "[m/s] Spectral width of radial velocity"
+		versions: ["V20", "V21", "V22"]
+	},
+	#Quantity & {
+		name:        "ZDR"
+		description: "ZDR [dB] Logged differential reflectivity"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "RHOHV"
+		description: "ρhv [0-1] Correlation between Zh and Zv"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "LDR"
+		description: "Ldr [dB] Linear depolarization ratio"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "PHIDP"
+		description: "φdp [degrees] Differential phase"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "KDP"
+		description: "Kdp [degrees/km] Specific differential phase"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "RATE"
+		description: "RR [mm/h] Rain rate"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ACRR"
+		description: "RRaccum. [mm] Accumulated precipitation"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "HGHT"
+		description: "H [km] Height above mean sea level"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "VIL"
+		description: "VIL [kg/m2] Vertical Integrated Liquid water"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UWND"
+		description: "U [m/s] Component of wind in x-direction"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "VWND"
+		description: "V [m/s] Component of wind in y-direction"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "w"
+		description: "[m/s] Vertical velocity (positive upwards)"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "w_dev"
+		description: "[m/s] Vertical velocity variability"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "div"
+		description: "[s−1] Divergence"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "div_dev"
+		description: "[s−1] Divergence variation"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "def"
+		description: "[s−1] Deformation"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "def_dev"
+		description: "[s−1] Deformation variation"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ad"
+		description: "[degrees] Axis of dialation (0-360)"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ad_dev"
+		description: "[degrees] Variability of axis of dialation (0-360)"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "rhohv_dev"
+		description: "ρhv [0-1] ρhv variation"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "QIND"
+		description: "Quality [0-1] Spatially analyzed quality indicator, according to OPERA II, normalized to between 0 (poorest quality) to 1 (best quality)"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "CLASS"
+		description: "Classification Indicates that data are classified and that the classes are specified according to the associated legend object (Section 6.2) whichmust be present."
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ff"
+		description: "[m/s] Mean horizontal wind velocity"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "dd"
+		description: "[degrees] Mean horizontal wind direction (degrees)"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ff_dev"
+		description: "[m/s] Velocity variability"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "dd_dev"
+		description: "[m/s] Direction variability"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "n"
+		description: "– Sample size. Marked for DEPRECATION."
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "BRDR"
+		description: "0 or 1 1 denotes a border where data from two or more radars meet incomposites, otherwise 0"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "DBZH"
+		description: "Zh [dBZ] Logged horizontally-polarized (corrected) reflectivity factor"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "DBZV"
+		description: "Zv [dBZ] Logged vertically-polarized (corrected) reflectivity factor"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "TH"
+		description: "Th [dBZ] Logged horizontally-polarized total (uncorrected) reflectivity factor"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "TV"
+		description: "Tv [dBZ] Logged vertically-polarized total (uncorrected) reflectivity factor"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "SNR"
+		description: "SNR [dB] Signal-to-noise ratio"
+		versions: ["V20", "V21", "V22", "V23"]
+	},
+	#Quantity & {
+		name:        "SQIH"
+		description: "SQIh [0-1] Signal quality index - horizontally-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "USQIH"
+		description: "SQIh [0-1] Signal quality index - horizontally-polarized - that has not been subject to a Doppler filter"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "SQIV"
+		description: "SQIv [0-1] Signal quality index - vertically-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "USQIV"
+		description: "SQIv [0-1] Signal quality index - vertically-polarized - that has not been subject to a Doppler filter"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "SNRH"
+		description: "SNRh [0-1] Normalized signal-to-noise ratio - horizontally-polarized. Marked for DEPRECATION."
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "SNRV"
+		description: "SNRv [0-1] Normalized signal-to-noise ratio - vertically-polarized. Marked for DEPRECATION."
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "SNRHC"
+		description: "SNRh,c [dB] Signal-to-noise ratio co-polar H"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "SNRHX"
+		description: "SNRh,x [dB] Signal-to-noise ratio cross-polar H"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "SNRVC"
+		description: "SNRv,c [dB] Signal-to-noise ratio co-polar V"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "SNRVX"
+		description: "SNRv,x [dB] Signal to noise ratio cross polar V"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "CCORH"
+		description: "CCh [dB] Clutter correction - horizontally-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "CCORV"
+		description: "CCv [dB] Clutter correction - vertically-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "VRADH"
+		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UVRADH"
+		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "VRADV"
+		description: "Vrad,v [m/s] Radial velocity - vertically-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UVRADV"
+		description: "Vrad,v [m/s] Radial velocity - vertically-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "VRADDH"
+		description: "Vrad,d [m/s] Dealiased horizontally-polarized radial velocity"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "VRADDV"
+		description: "Vrad,d [m/s] Dealiased vertically-polarized radial velocity"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "WRADH"
+		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UWRADH"
+		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized - that has not been subject to any filter or correction"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "WRADV"
+		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UWRADV"
+		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized - that has not been subject to any filter or correction"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "PSPH"
+		description: "PSP [dBm] Power spectrum peak - horizontally-polarized"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "PSPV"
+		description: "PSP [dBm] Power spectrum peak - vertically-polarized"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "UPSPH"
+		description: "PSP [dBm] Power spectrum peak - horizontally-polarized - that has not been subject to any filter or correction"
+		versions: [ "V23"]
+	},
+	#Quantity & {
+		name:        "UPSPV"
+		description: "PSP [dBm] Power spectrum peak - vertically-polarized - that has not been subject to any filter or correction"
+		versions: [ "V23"]
+	},
+	#Quantity & {
+		name:        "DBZH_dev"
+		description: "[dBZ] Variability of logged horizontally-polarized (corrected) reflectivity factor"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "DBZV_dev"
+		description: "[dBZ] Variability of logged vertically-polarized (corrected) reflectivity factor"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "UZDR"
+		description: "ZDR [dB] Logged differential reflectivity that has not been subject to a Doppler filter"
+		versions: [ "V23"]
+	},
+	#Quantity & {
+		name:        "URHOHV"
+		description: "ρhv [0-1] Correlation between Zh and Zv that has not been subject to any filter or correction"
+		versions: [ "V23"]
+	},
+	#Quantity & {
+		name:        "ULDR"
+		description: "Ldr [dB] Linear depolarization ratio that has not been subject to a Doppler filter"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "UPHIDP"
+		description: "φdp [degrees] Differential phase that has not been subject to any filter or correction"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "PIA"
+		description: "PIA [dB] Path Integrated Attenuation"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "UKDP"
+		description: "Kdp [degrees/km] Specific differential phase that has not been subject to any filter or correction"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "CPA"
+		description: "CPA [0-1] Clutter phase alignment (0: low probability of clutter, 1: high probability of clutter)"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "URATE"
+		description: "URR [mm/h] Uncorrected rain rate"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "POR"
+		description: "POR [0-1] Probability of rain (0: low probability, 1: high probability)"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "HI"
+		description: "HI [dBZ] Hail intensity"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "HP"
+		description: "HP [%] Hail probability. Marked for DEPRECATION."
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "POH"
+		description: "POH [0-1] Probability of hail (0: low probability, 1: high probability)"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "POSH"
+		description: "POSH [0-1] Probability of severe hail (0: low probability, 1: high probability)"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "MESH"
+		description: "MESH [cm] Maximum expected severe hail size"
+		versions: ["V23"]
+	},
+	#Quantity & {
+		name:        "RSHR"
+		description: "SHRr [m/s km] Radial shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ASHR"
+		description: "SHRa [m/s km] Azimuthal shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "CSHR"
+		description: "SHRc [m/s km] Range-azimuthal shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "ESHR"
+		description: "SHRe [m/s km] Elevation shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "OSHR"
+		description: "SHRo [m/s km] Range-elevation shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "HSHR"
+		description: "SHRh [m/s km] Horizontal shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "VSHR"
+		description: "SHRv [m/s km] Vertical shear"
+		versions: ["V22", "V23"]
+	},
+	#Quantity & {
+		name:        "TSHR"
+		description: "SHRt [m/s km] Three-dimensional shear"
+		versions: ["V22", "V23"]
+	},
+]
+
+#QuantityV20: or([ for q in #Quantities if list.Contains(q.versions, "V20") {q.name}])
+#QuantityV21: or([ for q in #Quantities if list.Contains(q.versions, "V21") {q.name}])
+#QuantityV22: or([ for q in #Quantities if list.Contains(q.versions, "V22") {q.name}])
+#QuantityV23: or([ for q in #Quantities if list.Contains(q.versions, "V23") {q.name}])
