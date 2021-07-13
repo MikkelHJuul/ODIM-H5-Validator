@@ -13,3 +13,8 @@ import "time"
 //nodes are the radar names... the enum is too large, and not bounded, I will not contemplate it currently
 #sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 
+//this is a bit special, but it's so static that it is deemed fine to keep here
+#Data: close({
+	CLASS:         "IMAGE"
+	IMAGE_VERSION: "1.2"
+})
