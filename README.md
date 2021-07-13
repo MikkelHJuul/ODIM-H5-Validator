@@ -10,6 +10,6 @@ The command
 ```
 maps the hdf5 file metadata to out. pipe that to a file and read using cue:
 ```shell
-> cue vet [--ignore] <my_output_file_from_python_script> odim_scema.cue -d '#Root'
+> cue vet [--ignore] <my_output_file_from_python_script> *.cue -d <'#RootV20'|'#RootV21'|'#RootV22'|'#RootV23'>
 ```
 This validates the output file vs. the data-specification written in [`odim_schema.cue`](odim_schema.cue).
