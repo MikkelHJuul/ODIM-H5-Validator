@@ -210,8 +210,6 @@ package odim_hdf5
 	"RGA"//Gauge-adjustment
 }
 
-
-
 #Software: string //it is too open
 
 #System:           string // it is too open to reduce

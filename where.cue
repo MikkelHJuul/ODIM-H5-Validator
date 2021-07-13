@@ -1,6 +1,5 @@
 package odim_hdf5
 
-
 #Where: #TopLevelPolarWhere | #SectorPolarWhere | #DatasetPolarWhere | #GeoImageWhere | #CrossSectionWhere | #VerticalWhere | #RHICrossSectionWhere
 
 //table 4

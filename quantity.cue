@@ -1,10 +1,11 @@
 package odim_hdf5
+
 import "list"
 
 #Quantity: close({
 	name:        string
 	description: string
-	versions: [...#supportedVersions] | *vs
+	versions:    [...#supportedVersions] | *vs
 })
 
 #Quantities: [...#Quantity]
