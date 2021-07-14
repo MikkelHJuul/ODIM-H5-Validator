@@ -2,445 +2,434 @@ package odim_hdf5
 
 import "list"
 
-#Quantity: close({
-	name:        string
-	description: string
-	versions:    [...#supportedVersions] | *vs
-})
-
-#Quantities: [...#Quantity]
+#Quantities: [...#VersionEnum]
 
 #Quantities: [
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SQI"
 		description: "Signal quality index"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "dbz"
 		description: "[dBZ] Logged radar reflectivity factor"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "dbz_dev"
 		description: "[dBZ] Variability of logged radar reflectivity factor"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "z"
 		description: "[Z] Linear radar reflectivity factor"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "z_dev"
 		description: "[Z] Variability of linear radar reflectivity factor"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "chi2"
 		description: "Chi-square value of wind profile fit"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "rhohv"
 		description: "ρhv [0-1] Correlation between Zh and Zv"
 		versions: ["V20", "V21"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VRAD"
 		description: "[m/s] Radial velocity"
 		versions: ["V20", "V21", "V22"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "WRAD"
 		description: "[m/s] Spectral width of radial velocity"
 		versions: ["V20", "V21", "V22"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ZDR"
 		description: "ZDR [dB] Logged differential reflectivity"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "RHOHV"
 		description: "ρhv [0-1] Correlation between Zh and Zv"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "LDR"
 		description: "Ldr [dB] Linear depolarization ratio"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "PHIDP"
 		description: "φdp [degrees] Differential phase"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "KDP"
 		description: "Kdp [degrees/km] Specific differential phase"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "RATE"
 		description: "RR [mm/h] Rain rate"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ACRR"
 		description: "RRaccum. [mm] Accumulated precipitation"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "HGHT"
 		description: "H [km] Height above mean sea level"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VIL"
 		description: "VIL [kg/m2] Vertical Integrated Liquid water"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UWND"
 		description: "U [m/s] Component of wind in x-direction"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VWND"
 		description: "V [m/s] Component of wind in y-direction"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "w"
 		description: "[m/s] Vertical velocity (positive upwards)"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "w_dev"
 		description: "[m/s] Vertical velocity variability"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "div"
 		description: "[s−1] Divergence"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "div_dev"
 		description: "[s−1] Divergence variation"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "def"
 		description: "[s−1] Deformation"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "def_dev"
 		description: "[s−1] Deformation variation"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ad"
 		description: "[degrees] Axis of dialation (0-360)"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ad_dev"
 		description: "[degrees] Variability of axis of dialation (0-360)"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "rhohv_dev"
 		description: "ρhv [0-1] ρhv variation"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "QIND"
 		description: "Quality [0-1] Spatially analyzed quality indicator, according to OPERA II, normalized to between 0 (poorest quality) to 1 (best quality)"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "CLASS"
 		description: "Classification Indicates that data are classified and that the classes are specified according to the associated legend object (Section 6.2) whichmust be present."
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ff"
 		description: "[m/s] Mean horizontal wind velocity"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "dd"
 		description: "[degrees] Mean horizontal wind direction (degrees)"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ff_dev"
 		description: "[m/s] Velocity variability"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "dd_dev"
 		description: "[m/s] Direction variability"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "n"
 		description: "– Sample size. Marked for DEPRECATION."
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "BRDR"
 		description: "0 or 1 1 denotes a border where data from two or more radars meet incomposites, otherwise 0"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "DBZH"
 		description: "Zh [dBZ] Logged horizontally-polarized (corrected) reflectivity factor"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "DBZV"
 		description: "Zv [dBZ] Logged vertically-polarized (corrected) reflectivity factor"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "TH"
 		description: "Th [dBZ] Logged horizontally-polarized total (uncorrected) reflectivity factor"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "TV"
 		description: "Tv [dBZ] Logged vertically-polarized total (uncorrected) reflectivity factor"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNR"
 		description: "SNR [dB] Signal-to-noise ratio"
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SQIH"
 		description: "SQIh [0-1] Signal quality index - horizontally-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "USQIH"
 		description: "SQIh [0-1] Signal quality index - horizontally-polarized - that has not been subject to a Doppler filter"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SQIV"
 		description: "SQIv [0-1] Signal quality index - vertically-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "USQIV"
 		description: "SQIv [0-1] Signal quality index - vertically-polarized - that has not been subject to a Doppler filter"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRH"
 		description: "SNRh [0-1] Normalized signal-to-noise ratio - horizontally-polarized. Marked for DEPRECATION."
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRV"
 		description: "SNRv [0-1] Normalized signal-to-noise ratio - vertically-polarized. Marked for DEPRECATION."
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRHC"
 		description: "SNRh,c [dB] Signal-to-noise ratio co-polar H"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRHX"
 		description: "SNRh,x [dB] Signal-to-noise ratio cross-polar H"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRVC"
 		description: "SNRv,c [dB] Signal-to-noise ratio co-polar V"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "SNRVX"
 		description: "SNRv,x [dB] Signal to noise ratio cross polar V"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "CCORH"
 		description: "CCh [dB] Clutter correction - horizontally-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "CCORV"
 		description: "CCv [dB] Clutter correction - vertically-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VRADH"
 		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UVRADH"
 		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VRADV"
 		description: "Vrad,v [m/s] Radial velocity - vertically-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UVRADV"
 		description: "Vrad,v [m/s] Radial velocity - vertically-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VRADDH"
 		description: "Vrad,d [m/s] Dealiased horizontally-polarized radial velocity"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VRADDV"
 		description: "Vrad,d [m/s] Dealiased vertically-polarized radial velocity"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "WRADH"
 		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UWRADH"
 		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized - that has not been subject to any filter or correction"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "WRADV"
 		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UWRADV"
 		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized - that has not been subject to any filter or correction"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "PSPH"
 		description: "PSP [dBm] Power spectrum peak - horizontally-polarized"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "PSPV"
 		description: "PSP [dBm] Power spectrum peak - vertically-polarized"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UPSPH"
 		description: "PSP [dBm] Power spectrum peak - horizontally-polarized - that has not been subject to any filter or correction"
 		versions: [ "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UPSPV"
 		description: "PSP [dBm] Power spectrum peak - vertically-polarized - that has not been subject to any filter or correction"
 		versions: [ "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "DBZH_dev"
 		description: "[dBZ] Variability of logged horizontally-polarized (corrected) reflectivity factor"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "DBZV_dev"
 		description: "[dBZ] Variability of logged vertically-polarized (corrected) reflectivity factor"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UZDR"
 		description: "ZDR [dB] Logged differential reflectivity that has not been subject to a Doppler filter"
 		versions: [ "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "URHOHV"
 		description: "ρhv [0-1] Correlation between Zh and Zv that has not been subject to any filter or correction"
 		versions: [ "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ULDR"
 		description: "Ldr [dB] Linear depolarization ratio that has not been subject to a Doppler filter"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UPHIDP"
 		description: "φdp [degrees] Differential phase that has not been subject to any filter or correction"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "PIA"
 		description: "PIA [dB] Path Integrated Attenuation"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "UKDP"
 		description: "Kdp [degrees/km] Specific differential phase that has not been subject to any filter or correction"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "CPA"
 		description: "CPA [0-1] Clutter phase alignment (0: low probability of clutter, 1: high probability of clutter)"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "URATE"
 		description: "URR [mm/h] Uncorrected rain rate"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "POR"
 		description: "POR [0-1] Probability of rain (0: low probability, 1: high probability)"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "HI"
 		description: "HI [dBZ] Hail intensity"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "HP"
 		description: "HP [%] Hail probability. Marked for DEPRECATION."
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "POH"
 		description: "POH [0-1] Probability of hail (0: low probability, 1: high probability)"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "POSH"
 		description: "POSH [0-1] Probability of severe hail (0: low probability, 1: high probability)"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "MESH"
 		description: "MESH [cm] Maximum expected severe hail size"
 		versions: ["V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "RSHR"
 		description: "SHRr [m/s km] Radial shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ASHR"
 		description: "SHRa [m/s km] Azimuthal shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "CSHR"
 		description: "SHRc [m/s km] Range-azimuthal shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "ESHR"
 		description: "SHRe [m/s km] Elevation shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "OSHR"
 		description: "SHRo [m/s km] Range-elevation shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "HSHR"
 		description: "SHRh [m/s km] Horizontal shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "VSHR"
 		description: "SHRv [m/s km] Vertical shear"
 		versions: ["V22", "V23"]
 	},
-	#Quantity & {
+	#VersionEnum & {
 		name:        "TSHR"
 		description: "SHRt [m/s km] Three-dimensional shear"
 		versions: ["V22", "V23"]
 	},
 ]
-
-#QuantityV20: or([ for q in #Quantities if list.Contains(q.versions, "V20") {q.name}])
-#QuantityV21: or([ for q in #Quantities if list.Contains(q.versions, "V21") {q.name}])
-#QuantityV22: or([ for q in #Quantities if list.Contains(q.versions, "V22") {q.name}])
-#QuantityV23: or([ for q in #Quantities if list.Contains(q.versions, "V23") {q.name}])

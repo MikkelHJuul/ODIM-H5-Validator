@@ -1,72 +1,101 @@
 package odim_hdf5
 
-vs: ["V20", "V21", "V22", "V23"]
-#supportedVersions: or(vs)
-
 #DatasetName: =~"dataset[0-9]{1,3}" // 1000 are quite a lot, but hey, why not??
 #DataName:    =~"data[0-9]{1,3}"
 #QualityName: =~"quality[0-9]{1,3}"
 
 #Group: {
-	what?:  #DatasetWhat //it is unclear if any of the top-level what/where/how groups are required
-	how?:   #How
-	where?: #Where
+	how?:  #How
+	what?:  #DatasetWhat
 }
 
 #DatasetGroup: {
 	#Group
 	[name=#DataName]:    #DataGroup
-	[name=#QualityName]: #DataGroup
+	[name=#QualityName]: #QualityGroup
 }
 
 #DataGroup: {
-	#Group
+	#QualityGroup
+	[name=#QualityName]: #QualityGroup
+}
 
-	[name=#QualityName]: #DataGroup //this allow for infinitely nested quality groups... YOLO
-	data?:               #Data
-	palette?:            _ // I have no idea what the structure is of this item
-	legend?:             _ // I have no idea what the structure is of this item
+#QualityGroup: {
+	#Group
+	data?:    #Data
+	palette?: _ // I have no idea what the structure is of this item
+	legend?:  _ // I have no idea what the structure is of this item
 }
 
 #_Root: {
 	[name=#DatasetName]: #DatasetGroup
-	what:                #TopWhat //it is unclear if any of the top-level what/where/how groups are required
 	how:                 #How
-	where:               #Where
+	what: {
+		date: #Date
+		time: #Time
+	}
 }
 
-#RootV23: {
-	#_Root
-	Conventions: "ODIM_H5/V2_3"
-	what: version: "H5rad 2.3"
-	what: source:  #SourceV23
-	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV23 //could this appear at other levels? quality: what: quantity??
+versionTexts: [name=#supportedVersions]: {
+	conventions: string
+	what: version: string
 }
 
-#RootV22: {
-	#_Root
-	Conventions: "ODIM_H5/V2_2"
-	what: version: "H5rad 2.2"
-	what: source:  #SourceV22
-	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV22 //could this appear at other levels
+versionTexts: {
+	"V23": {
+		conventions: "ODIM_H5/V2_3"
+		what: version: "H5rad 2.3"
+	}
+	"V22": {
+		conventions: "ODIM_H5/V2_2"
+		what: version: "H5rad 2.2"
+	}
+	"V21": {
+		conventions: "ODIM_H5/V2_1"
+		what: version: "H5rad 2.1"
+	}
+	"V20": {
+		conventions: "ODIM_H5/V2_0"
+		what: version: "H5rad 2.0"
+	}
+}
+
+for v, vals in versionTexts {
+	"#Root\(v)": {
+		vals
+		#_Root
+		what: {
+			source: sources[v]
+			objects: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
+		}
+
+		//wheres
+		where: or([for g in whereMap[v]["top"] { g } ])
+		[name=#DatasetName]: where: or([for g in whereMap[v]["dataset"] { g } ])
+		[name=#DatasetName]: [name=#DataName]: where: or([for g in whereMap[v]["data"] { g } ])
+		[name=#DatasetName]: [name=#QualityName]: where:  or([for g in whereMap[v]["data"] { g } ])
+
+		[name=#DatasetName]: what: #DataWhat & {
+			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+		}
+		[name=#DatasetName]: [name=#DataName]: what: #DataWhat & {
+			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+		}
+		[name=#DatasetName]: [name=#QualityName]: what: #DataWhat & {
+			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+		}
+		[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what: #DataWhat & {
+			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+		}
+	}
 }
 
 #RootV21: {
-	#_Root
-	Conventions: "ODIM_H5/V2_1"
-	what: version: "H5rad 2.1"
-	what: source:  #SourceV21
-	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV21 //could this appear at other levels
 	[name=#DatasetName]: how: azangles: #sequenceOfPairs // should this be done more elaborately?
 	[name=#DatasetName]: how: aztimes:  #sequenceOfPairs
 }
 
 #RootV20: {
-	#_Root
-	Conventions: "ODIM_H5/V2_0"
-	what: version: "H5rad 2.0"
-	what: source:  #SourceV20
-	[name=#DatasetName]: [name=#DataName]: what: quantity: #QuantityV20 //could this appear at other levels
 	[name=#DatasetName]: how: azangles: #sequenceOfPairs // should this be done more elaborately?
 	[name=#DatasetName]: how: aztimes:  #sequenceOfPairs
 }

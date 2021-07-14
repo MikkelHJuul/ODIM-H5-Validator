@@ -1,23 +1,65 @@
 package odim_hdf5
 
-#TopWhat: {
-	//mandatory Top-level what attributes: table 1
-	object: #Objects
-	date:   #Date
-	time:   #Time
-	//source and version added at Roots
-}
-
 //?? generate ??
-#SourceV20: =~"^(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+)(,(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+))*$"
-#SourceV21: =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-#SourceV22: =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-#SourceV23: =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
+sources: {
+		"V20": =~"^(WMO|RAD|ORG|PLC"|"CTY|CMT):([^,]+)(,(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+))*$"
+		"V21": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
+		"V22": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
+		"V23": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
+}
+//Table 2
+#Objects: [
+	#VersionEnum & {
+		name:        "PVOL"
+		description: "Polar volume"
+	},
+	#VersionEnum & {
+		name:        "CVOL"
+		description: "Cartesian volume"
+	},
+	#VersionEnum & {
+		name:        "SCAN"
+		description: "Polar scan"
+	},
+	#VersionEnum & {
+		name:        "RAY"
+		description: "Single polar ray"
+	},
+	#VersionEnum & {
+		name:        "AZIM"
+		description: "Azimuthal object"
+	},
+	#VersionEnum & {
+		name:        "ELEV"
+		description: "Elevational object"
+		versions: ["V22", "V23"]
+	},
+	#VersionEnum & {
+		name:        "IMAGE"
+		description: "2-D cartesian image"
+	},
+	#VersionEnum & {
+		name:        "COMP"
+		description: "Cartesian composite image(s)"
+	},
+	#VersionEnum & {
+		name:        "XSEC"
+		description: "2-D vertical cross section(s)"
+	},
+	#VersionEnum & {
+		name:        "VP"
+		description: "1-D vertical profile"
+	},
+	#VersionEnum & {
+		name:        "PIC"
+		description: "Embedded graphical image"
+	},
+]
 
-#DatasetWhat: {
+#DataWhat: close({
 	product?:  #Product //- According to Table 15
 	prodname?: string   //- Product name
-	//TODO prodpar
+	quantity?: string
 	prodpar?:   string // - According to Table 16 for products. Only used for cartesian products.
 	startdate?: #Date  //Starting YYYYMMDD Year, Month, and Day for the product
 	starttime?: #Time  //Hour, Minute, and Second for the product
@@ -27,32 +69,7 @@ package odim_hdf5
 	offset?:    float  //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 0.0.
 	nodata?:    float  //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float even if the data in question is in another format.
 	undetect?:  float  //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float even if the data in question is in another format.
-}
-
-//Table 2
-#Objects: {
-	"PVOL"//Polar volume
-} | {
-	"CVOL"//Cartesian volume
-} | {
-	"SCAN"//Polar scan
-} | {
-	"RAY"//Single polar ray
-} | {
-	"AZIM"//Azimuthal object
-} | {
-	"ELEV"//Elevational object //TODO from v2.2
-} | {
-	"IMAGE"//2-D cartesian image
-} | {
-	"COMP"//Cartesian composite image(s)
-} | {
-	"XSEC"//2-D vertical cross section(s)
-} | {
-	"VP"//1-D vertical profile
-} | {
-	"PIC"//Embedded graphical image
-}
+})
 
 #Product: {
 	"SCAN"//A scan of polar data
