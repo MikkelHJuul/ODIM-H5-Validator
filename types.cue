@@ -5,13 +5,13 @@ import "time"
 #Date: string & time.Format("20060102")
 #Time: string & time.Format("150405")
 
-#simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float64 //also some sequences
-#sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
+simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float64 //also some sequences
+sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
 
-#sequence: string
+sequence: string
 
 //nodes are the radar names... the enum is too large, and not bounded, I will not contemplate it currently
-#sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
+sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 
 //this is a bit special, but it's so static that it is deemed fine to keep here
 #Data: close({

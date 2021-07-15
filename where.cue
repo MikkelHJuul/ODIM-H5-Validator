@@ -103,14 +103,14 @@ allowedWhereGroups: or(whereGroups)
 		description: "The elevation angle of the start of the first gate in the sector (degrees)"
 		groups: ["polar"]
 		locations: ["data"]
-		versions: ["V2_3"]
+		versions: ["V2_3", "V2_4"]
 	},
 	#WhereObject & {
 		keys: stopel: float64 & >=0 & <=360
 		description: "The elevation angle of the end of the last gate in the sector (degrees)"
 		groups: ["polar"]
 		locations: ["data"]
-		versions: ["V2_3"]
+		versions: ["V2_3", "V2_4"]
 	},
 	#WhereObject & {
 		keys: projdef: string
@@ -131,19 +131,31 @@ allowedWhereGroups: or(whereGroups)
 		keys: zsize: int & >0
 		description: "Number of pixels in the Z dimension"
 		groups: ["geo"]
-		versions: ["V2_3"]
+		versions: ["V2_3", "V2_4"]
 	},
 	#WhereObject & {
 		keys: zstart: float64
 		description: "Height in meters above mean sea level of the lowest pixel in the Z dimension"
 		groups: ["geo"]
-		versions: ["V2_3"]
+		versions: ["V2_3", "V2_4"]
 	},
 	#WhereObject & {
 		keys: zscale: float64 & >0
-		description: "Pixel size in the Z dimension (meters)"
+		description: "Pixel size in the Z dimension (meters) DEPRECATED, V2_4"
 		groups: ["geo"]
-		versions: ["V2_3"]
+		versions: ["V2_3", "V2_4"]
+	},
+	#WhereObject & {
+		keys: ztop: simpleArrayOfDoubles
+		description: "meters Layer top heights above mean sea level. The size of this one-dimensional array corresponds with the number of vertical layers. Only used for three-dimensional products."
+		groups: ["geo"]
+		versions: ["V2_4"]
+	},
+	#WhereObject & {
+		keys: zbottom: simpleArrayOfDoubles
+		description: "meters Layer bottom heights above mean sea level. The size of this one-dimensional array corresponds with the number of vertical layers. Only used for three-dimensional products."
+		groups: ["geo"]
+		versions: ["V2_4"]
 	},
 	#WhereObject & {
 		keys: xscale: float64 & >0
@@ -216,13 +228,13 @@ allowedWhereGroups: or(whereGroups)
 		groups: ["RHI"]
 	},
 	#WhereObject & {
-		keys: angles: #simpleArrayOfDoubles
+		keys: angles: simpleArrayOfDoubles
 		description: "Elevation angles, in degrees, in the order of acquisition"
 		groups: ["RHI"]
 		versions: ["V2_0", "V2_1", "V2_2"]
 	},
 	#WhereObject & {
-		keys: angles?: #simpleArrayOfDoubles
+		keys: angles?: simpleArrayOfDoubles
 		description: "Elevation angles, in degrees, in the order of acquisition, DEPRECATED"
 		groups: ["RHI"]
 		versions: ["V2_3"]

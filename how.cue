@@ -31,8 +31,8 @@ package odim_hdf5
 	scan_index?: uint                  //Which scan this is in the temporal sequence (starting with 1) of the total float64 of scans comprising the volume.
 	scan_count?: uint                  //The total number of scans comprising the volume.
 	astart?:     float64                 //Azimuthal offset in degrees (◦) from 0◦ of the start of the first ray in the sweep. This value is positive where the gate starts clockwise after 0◦,and it will be negative if it starts before 0◦ . In either case, the value must be no larger than half a ray’s width.
-	startazA?:   #simpleArrayOfDoubles //Azimuthal start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
-	stopazA?:    #simpleArrayOfDoubles //Azimuthal stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	startazA?:   simpleArrayOfDoubles //Azimuthal start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	stopazA?:    simpleArrayOfDoubles //Azimuthal stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
 }
 
 #DesirableQualityHow: {
@@ -45,7 +45,7 @@ package odim_hdf5
 	extensions?:  string    //Name of the extensions of `/what/version`
 	task?:        string    //Name of the acquisition task or product generator
 	task_args?:   string    //Task arguments
-	data_origin?: #sequence //If a quantity or quality field has been modified, the originating quantity or quality field together with the applied quantity or quality field(s) should be provided, e.g. [/datasetM/dataN, /datasetM/dataN/qualityP] or [DBZH, se.smhi.detector.beamblockage].
+	data_origin?: sequence //If a quantity or quality field has been modified, the originating quantity or quality field together with the applied quantity or quality field(s) should be provided, e.g. [/datasetM/dataN, /datasetM/dataN/qualityP] or [DBZH, se.smhi.detector.beamblockage].
 	//TODO rules regarding this time wrt. root levet time
 	startepochs?: float64 //Seconds after a standard 1970 epoch for which the starting time of the data/product is valid. A compliment to “date” and “time” in Table 1, for those who prefer to calculate times directly in epoch seconds.
 	//TODO rules regarding this time wrt. root levet time
@@ -60,12 +60,12 @@ package odim_hdf5
 	sw_version?: =~"^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?$" //Software version in string format, e.g. “5.1” or “8.11.6.2”
 	zr_a?:       float64                                                                                               //Z-R constant a in Z = a Rb, applicable to any product containing reflectivity or precipitation data
 	zr_b?:       float64                                                                                               //Z-R exponent b in Z = a Rb, applicable to any product containing reflectivity or precipitation data
-	zr_a_A?:     #simpleArrayOfDoubles                                                                               //Z-R constant a in Z = a Rb, applicable to any product containing reflectivity or precipitation data
-	zr_b_A?:     #simpleArrayOfDoubles                                                                               //Z-R exponent b in Z = a Rb, applicable to any product containing reflectivity or precipitation data
+	zr_a_A?:     simpleArrayOfDoubles                                                                               //Z-R constant a in Z = a Rb, applicable to any product containing reflectivity or precipitation data
+	zr_b_A?:     simpleArrayOfDoubles                                                                               //Z-R exponent b in Z = a Rb, applicable to any product containing reflectivity or precipitation data
 	kr_a?:       float64                                                                                               //Kdp-R constant a in R = a Kdp b
 	kr_b?:       float64                                                                                               //Kdp-R exponent b in R = a Kdp b
-	kr_a_A?:     #simpleArrayOfDoubles                                                                               //Kdp-R constant a in R = a Kdp b
-	kr_b_A?:     #simpleArrayOfDoubles                                                                               //Kdp-R exponent b in R = a Kdp b
+	kr_a_A?:     simpleArrayOfDoubles                                                                               //Kdp-R constant a in R = a Kdp b
+	kr_b_A?:     simpleArrayOfDoubles                                                                               //Kdp-R exponent b in R = a Kdp b
 	simulated?:  ODIMBool                                                                                                //“True” if data are simulated, otherwise “False”
 }
 
@@ -88,7 +88,7 @@ package odim_hdf5
 	radomelossV?: float64                 //One-way dry radome loss in dB for vertically-polarized signals
 	gasattn?:     float64                 //Gaseous specific attenuation in dB/km assumed by the radar processor (zero if no gaseous attenuation is assumed)
 	nomTXpower?:  float64                 //Nominal transmitted peak power in kW at the output of the transmitter (magnetron/klystron output flange)
-	TXpower?:     #simpleArrayOfDoubles //Transmitted peak power in kW at the calibration reference plane. The values given are average powers over all transmitted pulses in each azimuth gate. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	TXpower?:     simpleArrayOfDoubles //Transmitted peak power in kW at the calibration reference plane. The values given are average powers over all transmitted pulses in each azimuth gate. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
 	powerdiff?:   float64                 //Power difference between transmitted horizontally and vertically-polarized signals in dB at the the feed horn.
 	phasediff?:   float64                 //Phase difference in degrees between transmitted horizontally and vertically-polarized signals as determined from the first valid range bins
 	Vsamples?:    int                   //Number of samples used for radial velocity measurements
@@ -101,35 +101,35 @@ package odim_hdf5
 	binmethod?:      #Method //How raw data in range are processed to arrive at the given value, according to Table 13
 	binmethod_avg?:  uint    //How many original data elements in range are averaged to arrive at the given value.
 	//Marked for DEPRECATION.
-	elangles?: #simpleArrayOfDoubles //Elevation angles (degrees above the horizon) used for each azimuth gate in an “intelligent” scan that e.g. follows the horizon. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	elangles?: simpleArrayOfDoubles //Elevation angles (degrees above the horizon) used for each azimuth gate in an “intelligent” scan that e.g. follows the horizon. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
 	//Marked for DEPRECATION.
-	startazT?: #simpleArrayOfDoubles //Acquisition start times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	startazT?: simpleArrayOfDoubles //Acquisition start times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
 	//Marked for DEPRECATION.
-	stopazT?:  #simpleArrayOfDoubles //Acquisition stop times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
-	startelA?: #simpleArrayOfDoubles //Elevational start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
-	stopelA?:  #simpleArrayOfDoubles //Elevational stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	stopazT?:  simpleArrayOfDoubles //Acquisition stop times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	startelA?: simpleArrayOfDoubles //Elevational start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
+	stopelA?:  simpleArrayOfDoubles //Elevational stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset.
 	//Marked for DEPRECATION.
-	startelT?: #simpleArrayOfDoubles //Acquisition start times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	startelT?: simpleArrayOfDoubles //Acquisition start times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
 	//Marked for DEPRECATION.
-	stopelT?: #simpleArrayOfDoubles //Acquisition stop times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
-	startT?:  #simpleArrayOfDoubles //Acquisition start times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
-	stopT?:   #simpleArrayOfDoubles //Acquisition stop times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	stopelT?: simpleArrayOfDoubles //Acquisition stop times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	startT?:  simpleArrayOfDoubles //Acquisition start times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
+	stopT?:   simpleArrayOfDoubles //Acquisition stop times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond.
 }
 
 #RecommendedCartesianImageHow: {
-	top_heights?:    #simpleArrayOfDoubles //Layer top heights (meter) above mean sea level
-	bottom_heights?: #simpleArrayOfDoubles //Layer bottom heights (meter) above mean sea level
-	angles?:         #simpleArrayOfDoubles //Elevation angles in the order in which they were acquired, used to generate the product
-	arotation?:      #simpleArrayOfDoubles //Antenna rotation speed in degrees/s (positive for clockwise, negative for counter-clockwise). The float64 of values in this array corresponds with the values of how/angles described above.
+	top_heights?:    simpleArrayOfDoubles //Layer top heights (meter) above mean sea level
+	bottom_heights?: simpleArrayOfDoubles //Layer bottom heights (meter) above mean sea level
+	angles?:         simpleArrayOfDoubles //Elevation angles in the order in which they were acquired, used to generate the product
+	arotation?:      simpleArrayOfDoubles //Antenna rotation speed in degrees/s (positive for clockwise, negative for counter-clockwise). The float64 of values in this array corresponds with the values of how/angles described above.
 	camethod?:       string                //How cartesian data are processed, according to Table 13
-	nodes?:          #sequenceOfNodes      //Radar nodes (Table 10) which have contributed data to the composite, e.g. “’searl’, ’noosl’, ’sease’, ’fikor”’
+	nodes?:          sequenceOfNodes      //Radar nodes (Table 10) which have contributed data to the composite, e.g. “’searl’, ’noosl’, ’sease’, ’fikor”’
 	ACCnum?:         uint                  //Number of images used in precipitation accumulation
 }
 
 #RecommendedVerticalProfileHow: {
 	minrange?:    float64                 //Minimum range at which data is used when generating profile (km)
 	maxrange?:    float64                 //Maximum range at which data is used when generating profile (km)
-	sample_size?: #simpleArrayOfDoubles //Number of valid data points in a level of a vertical profile. The float64 of values in this array corresponds with the value of where/levels for that dataset. dealiased boolean “True” if data has been dealiased, “False” if not
+	sample_size?: simpleArrayOfDoubles //Number of valid data points in a level of a vertical profile. The float64 of values in this array corresponds with the value of where/levels for that dataset. dealiased boolean “True” if data has been dealiased, “False” if not
 }
 
 #RecommendedQualityHow: {
@@ -141,7 +141,7 @@ package odim_hdf5
 	radar_msg?:    string     //Radar malfunction message
 	radhoriz?:     float64      //Radar horizon (maximum range in km)
 	OUR?:          float64      //Overall uptime reliability (%)
-	Dclutter?:     #sequence  //Doppler clutter filters used when collecting data
+	Dclutter?:     sequence  //Doppler clutter filters used when collecting data
 	clutterType?:  string     //Description of clutter filter used in the signal processor
 	clutterMap?:   string     //Filename of clutter map
 	zcalH?:        float64      //Calibration offset in dB for the horizontal channel
@@ -155,8 +155,8 @@ package odim_hdf5
 	VPRCorr?:      ODIMBool       //“True” if vertical reflectivity profile correction has been applied, otherwise “False”
 	//Marked for DEPRECATION.
 	freeze?:               float64                 //Freezing level (km) above sea level.
-	melting_layer_top?:    #simpleArrayOfDoubles //Melting layer top level (km) above mean sea level
-	melting_layer_bottom?: #simpleArrayOfDoubles //Melting layer bottom level (km) above mean sea level
+	melting_layer_top?:    simpleArrayOfDoubles //Melting layer top level (km) above mean sea level
+	melting_layer_bottom?: simpleArrayOfDoubles //Melting layer bottom level (km) above mean sea level
 	min?:                  float64                 //Minimum value for continuous quality data
 	max?:                  float64                 //Maximum value for continuous quality data
 	step?:                 float64                 //Step value for continuous quality data
