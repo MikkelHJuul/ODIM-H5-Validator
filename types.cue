@@ -21,7 +21,7 @@ import "time"
 
 //meta-types start here
 
-vs: ["V20", "V21", "V22", "V23"]
+vs: ["V20", "V21", "V22", "V23", "V24"]
 #supportedVersions: or(vs)
 
 //for generating e.g. enum-sets via the "name" attribute

@@ -6,7 +6,9 @@ sources: {
 		"V21": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
 		"V22": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
 		"V23": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
+		"V24": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
 }
+
 //Table 2
 #Objects: [
 	#VersionEnum & {
@@ -32,7 +34,7 @@ sources: {
 	#VersionEnum & {
 		name:        "ELEV"
 		description: "Elevational object"
-		versions: ["V22", "V23"]
+		versions: ["V22", "V23", "V24"]
 	},
 	#VersionEnum & {
 		name:        "IMAGE"
