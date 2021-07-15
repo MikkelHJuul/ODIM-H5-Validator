@@ -61,6 +61,7 @@ versionTexts: {
 }
 
 for v, vals in versionTexts {
+	quant: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
 	"#Root\(v)": {
 		vals
 		#_Root
@@ -76,16 +77,16 @@ for v, vals in versionTexts {
 		[name=#DatasetName]: [name=#QualityName]: where:  or([for g in whereMap[v]["data"] { g } ])
 
 		[name=#DatasetName]: what: #DataWhat & {
-			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+			quantity?: quant
 		}
 		[name=#DatasetName]: [name=#DataName]: what: #DataWhat & {
-			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+			quantity?: quant
 		}
 		[name=#DatasetName]: [name=#QualityName]: what: #DataWhat & {
-			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+			quantity?: quant
 		}
 		[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what: #DataWhat & {
-			quantity?: or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+			quantity?: quant
 		}
 	}
 }
