@@ -23,13 +23,13 @@ ODIMBool: "True" | "False"
 
 //meta-types start here
 
-vs: ["V20", "V21", "V22", "V23", "V24"]
+vs: ["V2_0", "V2_1", "V2_2", "V2_3", "V2_4"]
 #supportedVersions: or(vs)
 
 //for generating e.g. enum-sets via the "name" attribute
 //note, the description is added purely as metadata, I do not expect to ever use it.
 //use something like:
-//   //someV20Enum: or([for e in #SomeEnum if list.Contains(e.versions, "V20") { e.name } ])
+//   //someV2_0Enum: or([for e in #SomeEnum if list.Contains(e.versions, "V2_0") { e.name } ])
 //example in [quantity](quantity.cue)
 #VersionEnum: close({
 	name:         string
@@ -42,8 +42,8 @@ allowedLocations:                or(locs)
 
 //for generating object-sets via versions, just like #VersionEnum however for objects:
 //usage is pretty much the same, but has the extra added benefit of being able to filter on tags as well:
-//  //#someDatasetObjectV22: { // < this is a validation object containing "V22" and "dataset" objects from the list #SomeObjectList
-//  //  for o in #SomeObjectList if list.Contains(o.versions, "V22") & list.Contains(o.location, "dataset") {
+//  //#someDatasetObjectV2_2: { // < this is a validation object containing "V2_2" and "dataset" objects from the list #SomeObjectList
+//  //  for o in #SomeObjectList if list.Contains(o.versions, "V2_2") & list.Contains(o.location, "dataset") {
 //  //    o.keys
 //  //  }
 //  //}

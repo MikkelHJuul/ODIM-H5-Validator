@@ -2,12 +2,12 @@ package odim_hdf5
 
 //?? generate ??
 sources: {
-		"V20": =~"^(WMO|RAD|ORG|PLC"|"CTY|CMT):([^,]+)(,(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+))*$"
-		"V21": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-		"V22": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-		"V23": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
-		//TODO V24 mandatory `NOD` for single-radar products...
-		"V24": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
+		"V2_0": =~"^(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+)(,(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+))*$"
+		"V2_1": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
+		"V2_2": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
+		"V2_3": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
+		//TODO V2_4 mandatory `NOD` for single-radar products...
+		"V2_4": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
 }
 
 //Table 2
@@ -35,7 +35,7 @@ sources: {
 	#VersionEnum & {
 		name:        "ELEV"
 		description: "Elevational object"
-		versions: ["V22", "V23", "V24"]
+		versions: ["V2_2", "V2_3", "V2_4"]
 	},
 	#VersionEnum & {
 		name:        "IMAGE"

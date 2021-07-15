@@ -103,14 +103,14 @@ allowedWhereGroups: or(whereGroups)
 		description: "The elevation angle of the start of the first gate in the sector (degrees)"
 		groups: ["polar"]
 		locations: ["data"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: stopel: float64 & >=0 & <=360
 		description: "The elevation angle of the end of the last gate in the sector (degrees)"
 		groups: ["polar"]
 		locations: ["data"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: projdef: string
@@ -131,19 +131,19 @@ allowedWhereGroups: or(whereGroups)
 		keys: zsize: int & >0
 		description: "Number of pixels in the Z dimension"
 		groups: ["geo"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: zstart: float64
 		description: "Height in meters above mean sea level of the lowest pixel in the Z dimension"
 		groups: ["geo"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: zscale: float64 & >0
 		description: "Pixel size in the Z dimension (meters)"
 		groups: ["geo"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: xscale: float64 & >0
@@ -219,13 +219,13 @@ allowedWhereGroups: or(whereGroups)
 		keys: angles: #simpleArrayOfDoubles
 		description: "Elevation angles, in degrees, in the order of acquisition"
 		groups: ["RHI"]
-		versions: ["V20", "V21", "V22"]
+		versions: ["V2_0", "V2_1", "V2_2"]
 	},
 	#WhereObject & {
 		keys: angles?: #simpleArrayOfDoubles
 		description: "Elevation angles, in degrees, in the order of acquisition, DEPRECATED"
 		groups: ["RHI"]
-		versions: ["V23"]
+		versions: ["V2_3"]
 	},
 	#WhereObject & {
 		keys: interval: float64
