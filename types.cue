@@ -19,6 +19,8 @@ import "time"
 	IMAGE_VERSION: "1.2"
 })
 
+ODIMBool: "True" | "False"
+
 //meta-types start here
 
 vs: ["V20", "V21", "V22", "V23", "V24"]

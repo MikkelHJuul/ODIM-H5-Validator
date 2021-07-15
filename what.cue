@@ -68,10 +68,10 @@ sources: {
 	starttime?: #Time  //Hour, Minute, and Second for the product
 	enddate?:   #Date  // Year, Month, and Day for the product
 	endtime?:   #Time  // Hour, Minute, and Second for the product
-	gain?:      float  //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 1.0.
-	offset?:    float  //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 0.0.
-	nodata?:    float  //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float even if the data in question is in another format.
-	undetect?:  float  //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float even if the data in question is in another format.
+	gain?:      float64  //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 1.0.
+	offset?:    float64  //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 0.0.
+	nodata?:    float64  //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float64 even if the data in question is in another format.
+	undetect?:  float64  //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
 })
 
 #Product: {
