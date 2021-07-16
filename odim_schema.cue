@@ -67,11 +67,30 @@ versionTexts: {
 }
 v:     *vs[len(vs)-1] | string @tag(version)
 quant: or([ for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+prod:  or([ for p in #Product if list.Contains(p.versions, v) {q.name}])
+whereGroups: {
+	for w in whereObjects if list.Contains(w.versions, v) {
+		for l in w.locations {
+			"\(l)": {
+				for g in w.groups {
+					"\(g)": {
+						w.keys
+					}
+				}
+			}
+		}
+	}
+}
+#VersionDataWhat: #DataWhat & {
+	quantity?: quant
+	product?:  prod
+}
+whereConst: dataset: or([ for g in whereGroups.dataset {g}])
 root: {
 	versionTexts[v]
 	#Root
 	what: {
-		source:  sources[v]
+		source: sources[v]
 		object: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
 	}
 	_how: {for h in Hows if list.Contains(h.versions, v) {h.keys}}
@@ -80,34 +99,16 @@ root: {
 	[name=#DatasetName]: [name=#DataName]: how?:    _how
 	[name=#DatasetName]: [name=#QualityName]: how?: _how
 
-	_whereGroups: {
-		for w in whereObjects if list.Contains(w.versions, v) {
-			for l in w.locations {
-				"\(l)": {
-					for g in w.groups {
-						"\(g)": {
-							w.keys
-						}
-					}
-				}
-			}
-		}
-	}
-	where?: or([ for g in _whereGroups["top"] {g}])
-	[name=#DatasetName]: where?: or([for g in _whereGroups["dataset"] {g}])
-	[name=#DatasetName]: [name=#DataName]: where?:    or([ for g in _whereGroups["data"] {g}])
-	[name=#DatasetName]: [name=#QualityName]: where?: or([ for g in _whereGroups["data"] {g}])
+	_topWhere:     or([ for g in whereGroups["top"] {g}])
+	_dataWhere:    or([ for g in whereGroups["data"] {g}])
+	_datasetWhere: or([ for g in whereGroups["dataset"] {g}])
+	where?:        _topWhere
+	[name=#DatasetName]: where?: _datasetWhere
+	[name=#DatasetName]: [name=#DataName]: where?:    _dataWhere
+	[name=#DatasetName]: [name=#QualityName]: where?: _dataWhere
 
-	[name=#DatasetName]: what?: #DataWhat & {
-		quantity?: quant
-	}
-	[name=#DatasetName]: [name=#DataName]: what?: #DataWhat & {
-		quantity?: quant
-	}
-	[name=#DatasetName]: [name=#QualityName]: what?: #DataWhat & {
-		quantity?: quant
-	}
-	[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what?: #DataWhat & {
-		quantity?: quant
-	}
+	[name=#DatasetName]: what?: #VersionDataWhat
+	[name=#DatasetName]: [name=#DataName]: what?:    #VersionDataWhat
+	[name=#DatasetName]: [name=#QualityName]: what?: #VersionDataWhat
+	[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what?: #VersionDataWhat
 }

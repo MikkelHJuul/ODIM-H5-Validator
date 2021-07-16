@@ -1,10 +1,9 @@
 package odim_hdf5
 
-
 //The group RHI and side-panel are not decisively clear on what they mean.
 // RHI is interpreted as a group, the side-panel section of the table is interpreted as data/dataset-specific values
-whereGroups: ["polar", "vertical", "cross-section", "geo", "RHI"]
-allowedWhereGroups: or(whereGroups)
+whereGroupNames: ["polar", "vertical", "cross-section", "geo", "RHI"]
+allowedWhereGroups: or(whereGroupNames)
 
 #WhereObject: #VersionObject & {
 	groups: [...allowedWhereGroups]

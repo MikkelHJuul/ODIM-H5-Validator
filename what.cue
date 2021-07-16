@@ -60,8 +60,8 @@ sources: {
 ]
 
 #DataWhat: close({
-	product?:   #Product //- According to Table 15
-	prodname?:  string   //- Product name
+	product?:   string //- According to Table 15
+	prodname?:  string //- Product name
 	quantity?:  string
 	prodpar?:   string  // - According to Table 16 for products. Only used for cartesian products.
 	startdate?: #Date   //Starting YYYYMMDD Year, Month, and Day for the product
@@ -74,42 +74,83 @@ sources: {
 	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
 })
 
-#Product: {
-	"SCAN"//A scan of polar data
-} | {
-	"PPI"//Plan position indicator (cartesian)
-} | {
-	"CAPPI"//Constant altitude PPI
-} | {
-	"PCAPPI"//Pseudo-CAPPI
-} | {
-	"ETOP"//Echo top
-} | {
-	"EBASE"//Echo base
-} | {
-	"MAX"//Maximum
-} | {
-	"RR"//Accumulation
-} | {
-	"VIL"//Vertically integrated liquid water
-} | {
-	"SURF"//Information valid at the Earth’s surface
-} | {
-	"COMP"//Composite
-} | {
-	"VP"//Vertical profile
-} | {
-	"RHI"//Range height indicator
-} | {
-	"XSEC"//Arbitrary vertical slice
-} | {
-	"VSP"//Vertical side panel
-} | {
-	"HSP"//Horizontal side panel
-} | {
-	"RAY"//Ray
-} | {
-	"AZIM"//Azimuthal type product
-} | {
-	"QUAL"//Quality metric
-}
+#Product: [
+	#VersionEnum & {
+		name:        "SCAN"
+		description: "A scan of polar data"
+	},
+	#VersionEnum & {
+		name:        "PPI"
+		description: "Plan position indicator (cartesian)"
+	},
+	#VersionEnum & {
+		name:        "CAPPI"
+		description: "Constant altitude PPI"
+	},
+	#VersionEnum & {
+		name:        "PCAPPI"
+		description: "Pseudo-CAPPI"
+	},
+	#VersionEnum & {
+		name:        "ETOP"
+		description: "Echo top"
+	},
+	#VersionEnum & {
+		name:        "EBASE"
+		description: "Echo base"
+		versions:    from["V2_3"]
+	},
+	#VersionEnum & {
+		name:        "MAX"
+		description: "Maximum"
+	},
+	#VersionEnum & {
+		name:        "RR"
+		description: "Accumulation"
+	},
+	#VersionEnum & {
+		name:        "VIL"
+		description: "Vertically integrated liquid water"
+	},
+	#VersionEnum & {
+		name:        "SURF"
+		description: "Information valid at the Earth’s surface"
+		versions:    from["V2_2"]
+	},
+	#VersionEnum & {
+		name:        "COMP"
+		description: "Composite"
+	},
+	#VersionEnum & {
+		name:        "VP"
+		description: "Vertical profile"
+	},
+	#VersionEnum & {
+		name:        "RHI"
+		description: "Range height indicator"
+	},
+	#VersionEnum & {
+		name:        "XSEC"
+		description: "Arbitrary vertical slice"
+	},
+	#VersionEnum & {
+		name:        "VSP"
+		description: "Vertical side panel"
+	},
+	#VersionEnum & {
+		name:        "HSP"
+		description: "Horizontal side panel"
+	},
+	#VersionEnum & {
+		name:        "RAY"
+		description: "Ray"
+	},
+	#VersionEnum & {
+		name:        "AZIM"
+		description: "Azimuthal type product"
+	},
+	#VersionEnum & {
+		name:        "QUAL"
+		description: "Quality metric"
+	},
+]
