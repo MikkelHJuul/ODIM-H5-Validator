@@ -7,8 +7,7 @@ import "list"
 #QualityName: =~"quality[0-9]{1,3}"
 
 #Group: {
-	how?:  #How
-	what?:  #DataWhat
+	what?: #DataWhat
 }
 
 #DatasetGroup: {
@@ -29,9 +28,8 @@ import "list"
 	legend?:  _ // I have no idea what the structure is of this item
 }
 
-#_Root: {
+#Root: {
 	[name=#DatasetName]: #DatasetGroup
-	how:                 #How
 	what: {
 		date: #Date
 		time: #Time
@@ -43,9 +41,13 @@ VersionItems: close({
 	what: version: string
 })
 
-versionTexts: [name=#supportedVersions]: VersionItems
+versionTexts: [name=supportedVersions]: VersionItems
 
 versionTexts: {
+	"V2_4": VersionItems & {
+		Conventions: "ODIM_H5/V2_4"
+		what: version: "H5rad 2.4"
+	}
 	"V2_3": VersionItems & {
 		Conventions: "ODIM_H5/V2_3"
 		what: version: "H5rad 2.3"
@@ -63,34 +65,49 @@ versionTexts: {
 		what: version: "H5rad 2.0"
 	}
 }
+v:     *vs[len(vs)-1] | string @tag(version)
+quant: or([ for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+root: {
+	versionTexts[v]
+	#Root
+	what: {
+		source:  sources[v]
+		object: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
+	}
+	_how: {for h in Hows if list.Contains(h.versions, v) {h.keys}}
+	how?: _how
+	[name=#DatasetName]: how?: _how
+	[name=#DatasetName]: [name=#DataName]: how?:    _how
+	[name=#DatasetName]: [name=#QualityName]: how?: _how
 
-for v, vals in versionTexts {
-	quant: "\(v)": or([for q in #Quantities if list.Contains(q.versions, v) {q.name}])
-	roots: "\(v)": {
-		vals
-		#_Root
-		what: {
-			source: sources[v]
-			objects: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
+	_whereGroups: {
+		for w in whereObjects if list.Contains(w.versions, v) {
+			for l in w.locations {
+				"\(l)": {
+					for g in w.groups {
+						"\(g)": {
+							w.keys
+						}
+					}
+				}
+			}
 		}
+	}
+	where?: or([ for g in _whereGroups["top"] {g}])
+	[name=#DatasetName]: where?: or([for g in _whereGroups["dataset"] {g}])
+	[name=#DatasetName]: [name=#DataName]: where?:    or([ for g in _whereGroups["data"] {g}])
+	[name=#DatasetName]: [name=#QualityName]: where?: or([ for g in _whereGroups["data"] {g}])
 
-		//wheres
-		where: or([for g in whereMap[v]["top"] { g } ])
-		[name=#DatasetName]: where: or([for g in whereMap[v]["dataset"] { g } ])
-		[name=#DatasetName]: [name=#DataName]: where: or([for g in whereMap[v]["data"] { g } ])
-		[name=#DatasetName]: [name=#QualityName]: where:  or([for g in whereMap[v]["data"] { g } ])
-
-		[name=#DatasetName]: what: #DataWhat & {
-			quantity?: quant[v]
-		}
-		[name=#DatasetName]: [name=#DataName]: what: #DataWhat & {
-			quantity?: quant[v]
-		}
-		[name=#DatasetName]: [name=#QualityName]: what: #DataWhat & {
-			quantity?: quant[v]
-		}
-		[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what: #DataWhat & {
-			quantity?: quant[v]
-		}
+	[name=#DatasetName]: what?: #DataWhat & {
+		quantity?: quant
+	}
+	[name=#DatasetName]: [name=#DataName]: what?: #DataWhat & {
+		quantity?: quant
+	}
+	[name=#DatasetName]: [name=#QualityName]: what?: #DataWhat & {
+		quantity?: quant
+	}
+	[name=#DatasetName]: [name=#DataName]: [name=#QualityName]: what?: #DataWhat & {
+		quantity?: quant
 	}
 }

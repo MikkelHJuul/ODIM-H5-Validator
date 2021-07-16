@@ -1,11 +1,14 @@
 package odim_hdf5
 
-import "time"
+import (
+	"time"
+)
 
 #Date: string & time.Format("20060102")
 #Time: string & time.Format("150405")
 
 simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float64 //also some sequences
+simpleArrayOfUInts:   uint | string & =~"^[0-9]+(,[0-9]+)*$"
 sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
 
 sequence: string
@@ -24,7 +27,13 @@ ODIMBool: "True" | "False"
 //meta-types start here
 
 vs: ["V2_0", "V2_1", "V2_2", "V2_3", "V2_4"]
-#supportedVersions: or(vs)
+supportedVersions: or(vs)
+
+from: [name=supportedVersions]: [...supportedVersions]
+
+for i, v in vs {
+	from: "\(v)": vs[i:len(vs)]
+}
 
 //for generating e.g. enum-sets via the "name" attribute
 //note, the description is added purely as metadata, I do not expect to ever use it.
@@ -34,7 +43,7 @@ vs: ["V2_0", "V2_1", "V2_2", "V2_3", "V2_4"]
 #VersionEnum: close({
 	name:         string
 	description?: string
-	versions:     [...#supportedVersions] | *vs
+	versions:     [...supportedVersions] | *vs
 })
 
 locs: ["top", "dataset", "data"] //quality?
@@ -52,11 +61,14 @@ allowedLocations:                or(locs)
 #VersionObject: close({
 	keys:         _
 	description?: string
-	versions:     [...#supportedVersions] | *vs
-	locations:     [...allowedLocations] | *locs
+	versions:     [...supportedVersions] | *vs
+	deprecated?: [...supportedVersions] //currently unused
+	locations:                          [...allowedLocations] | *locs
 	groups: [...string]
 })
 
 #VersionLocationTree: {
-	[name=#supportedVersions]: [name=allowedLocations]: [string]: _
+	[name=supportedVersions]: [name=allowedLocations]: [string]: _
 }
+
+aV: vs[len(vs)-1]

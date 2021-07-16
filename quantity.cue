@@ -184,22 +184,22 @@ package odim_hdf5
 	#VersionEnum & {
 		name:        "SQIH"
 		description: "SQIh [0-1] Signal quality index - horizontally-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "USQIH"
 		description: "SQIh [0-1] Signal quality index - horizontally-polarized - that has not been subject to a Doppler filter"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "SQIV"
 		description: "SQIv [0-1] Signal quality index - vertically-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "USQIV"
 		description: "SQIv [0-1] Signal quality index - vertically-polarized - that has not been subject to a Doppler filter"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "SNRH"
@@ -214,238 +214,238 @@ package odim_hdf5
 	#VersionEnum & {
 		name:        "SNRHC"
 		description: "SNRh,c [dB] Signal-to-noise ratio co-polar H"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "SNRHX"
 		description: "SNRh,x [dB] Signal-to-noise ratio cross-polar H"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "SNRVC"
 		description: "SNRv,c [dB] Signal-to-noise ratio co-polar V"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "SNRVX"
 		description: "SNRv,x [dB] Signal to noise ratio cross polar V"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "CCORH"
 		description: "CCh [dB] Clutter correction - horizontally-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "CCORV"
 		description: "CCv [dB] Clutter correction - vertically-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "VRADH"
 		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "UVRADH"
 		description: "Vrad,h [m/s] Radial velocity - horizontally-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "VRADV"
 		description: "Vrad,v [m/s] Radial velocity - vertically-polarized. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "UVRADV"
 		description: "Vrad,v [m/s] Radial velocity - vertically-polarized - that has not been subject to any filter or correction. Radial winds towards the radar are negative, while radial winds away from the radar are positive (PANT)."
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "VRADDH"
 		description: "Vrad,d [m/s] Dealiased horizontally-polarized radial velocity"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "VRADDV"
 		description: "Vrad,d [m/s] Dealiased vertically-polarized radial velocity"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "WRADH"
 		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "UWRADH"
 		description: "Wrad,h [m/s] Spectral width of radial velocity - horizontally-polarized - that has not been subject to any filter or correction"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "WRADV"
 		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "UWRADV"
 		description: "Wrad,v [m/s] Spectral width of radial velocity - vertically-polarized - that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "PSPH"
 		description: "PSP [dBm] Power spectrum peak - horizontally-polarized"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "PSPV"
 		description: "PSP [dBm] Power spectrum peak - vertically-polarized"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "UPSPH"
 		description: "PSP [dBm] Power spectrum peak - horizontally-polarized - that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "UPSPV"
 		description: "PSP [dBm] Power spectrum peak - vertically-polarized - that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "DBZH_dev"
 		description: "[dBZ] Variability of logged horizontally-polarized (corrected) reflectivity factor"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "DBZV_dev"
 		description: "[dBZ] Variability of logged vertically-polarized (corrected) reflectivity factor"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "UZDR"
 		description: "ZDR [dB] Logged differential reflectivity that has not been subject to a Doppler filter"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "URHOHV"
 		description: "ρhv [0-1] Correlation between Zh and Zv that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "ULDR"
 		description: "Ldr [dB] Linear depolarization ratio that has not been subject to a Doppler filter"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "UPHIDP"
 		description: "φdp [degrees] Differential phase that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "PIA"
 		description: "PIA [dB] Path Integrated Attenuation"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "UKDP"
 		description: "Kdp [degrees/km] Specific differential phase that has not been subject to any filter or correction"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "CPA"
 		description: "CPA [0-1] Clutter phase alignment (0: low probability of clutter, 1: high probability of clutter)"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "URATE"
 		description: "URR [mm/h] Uncorrected rain rate"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "POR"
 		description: "POR [0-1] Probability of rain (0: low probability, 1: high probability)"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "HI"
 		description: "HI [dBZ] Hail intensity"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "HP"
 		description: "HP [%] Hail probability."
-		versions: ["V2_2", "V2_3"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "POH"
 		description: "POH [0-1] Probability of hail (0: low probability, 1: high probability)"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "POSH"
 		description: "POSH [0-1] Probability of severe hail (0: low probability, 1: high probability)"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "MESH"
 		description: "MESH [cm] Maximum expected severe hail size"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "RSHR"
 		description: "SHRr [m/s km] Radial shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "ASHR"
 		description: "SHRa [m/s km] Azimuthal shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "CSHR"
 		description: "SHRc [m/s km] Range-azimuthal shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "ESHR"
 		description: "SHRe [m/s km] Elevation shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "OSHR"
 		description: "SHRo [m/s km] Range-elevation shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "HSHR"
 		description: "SHRh [m/s km] Horizontal shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "VSHR"
 		description: "SHRv [m/s km] Vertical shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "TSHR"
 		description: "SHRt [m/s km] Three-dimensional shear"
-		versions: ["V2_2", "V2_3", "V2_4"]
+		versions:    from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "USNRHC"
 		description: "dB Signal-to-noise ratio co-polar H that has not been subject to a Doppler filter. This attribute should be used for a STAR mode radar."
-		versions: ["V2_4"]
+		versions:    from["V2_4"]
 	},
 	#VersionEnum & {
 		name:        "USNRVC"
 		description: "dB Signal-to-noise ratio co-polar V that has not been subject to a Doppler filter. This attribute should be used for a STAR mode radar."
-		versions: ["V2_4"]
+		versions:    from["V2_4"]
 	},
 ]
 
 //uncomment test object, then
 //import "list"
-//		//cue eval quantities.cue types.cue -e test -e testlen
-//		//cue help eval  # for more info
+//  //cue eval quantities.cue types.cue -e test -e testlen
+//  //cue help eval  # for more info
 //test: list.Sort([for q in #Quantities if list.Contains(q.versions, "V2_4") {q.name}], list.Ascending)
 //testlen: len(test)

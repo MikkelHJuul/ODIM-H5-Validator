@@ -1,22 +1,5 @@
 package odim_hdf5
 
-whereMap: #VersionLocationTree & {
-	for w in #whereObjects {
-		for v in w.versions {
-			"\(v)": {
-				for l in w.locations {
-					"\(l)": {
-						for g in w.groups {
-							"\(g)": {
-								w.keys
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
 
 //The group RHI and side-panel are not decisively clear on what they mean.
 // RHI is interpreted as a group, the side-panel section of the table is interpreted as data/dataset-specific values
@@ -27,7 +10,7 @@ allowedWhereGroups: or(whereGroups)
 	groups: [...allowedWhereGroups]
 }
 
-#whereObjects: [
+whereObjects: [
 	#WhereObject & {
 		keys: lat: float64
 		description: "Latitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
@@ -249,28 +232,28 @@ allowedWhereGroups: or(whereGroups)
 		description: "Number of points in the profile"
 		groups: ["vertical"]
 	},
-	  #WhereObject & {
-  	keys: start_lon: float64
-  	description: "Start position’s longitude"
-  	groups: ["cross-section", "RHI"]
-  	locations: ["dataset", "data"]
-  },
-  #WhereObject & {
-  	keys: start_lat: float64
-  	description: "Start position’s latitude"
-  	groups: ["cross-section", "RHI"]
-  	locations: ["dataset", "data"]
-  },
-  #WhereObject & {
-  	keys: stop_lon: float64
-  	description: "Stop position’s longitude"
-  	groups: ["cross-section", "RHI"]
-  	locations: ["dataset", "data"]
-  },
-  #WhereObject & {
-  	keys: stop_lat: float64
-  	description: "Stop position’s latitude"
-  	groups: ["cross-section", "RHI"]
-  	locations: ["dataset", "data"]
-  },
+	#WhereObject & {
+		keys: start_lon: float64
+		description: "Start position’s longitude"
+		groups: ["cross-section", "RHI"]
+		locations: ["dataset", "data"]
+	},
+	#WhereObject & {
+		keys: start_lat: float64
+		description: "Start position’s latitude"
+		groups: ["cross-section", "RHI"]
+		locations: ["dataset", "data"]
+	},
+	#WhereObject & {
+		keys: stop_lon: float64
+		description: "Stop position’s longitude"
+		groups: ["cross-section", "RHI"]
+		locations: ["dataset", "data"]
+	},
+	#WhereObject & {
+		keys: stop_lat: float64
+		description: "Stop position’s latitude"
+		groups: ["cross-section", "RHI"]
+		locations: ["dataset", "data"]
+	},
 ]
