@@ -1,5 +1,40 @@
 package odim_hdf5
 
+import "list"
+
+topWhere: #TopPolar | #TopVertical | #TopCrossSection | #TopGeo | #TopRHI
+datasetWhere: #DatasetPolar | #DatasetVertical | #DatasetCrossSection | #DatasetGeo | #DatasetRHI
+dataWhere: #DataPolar | #DataVertical | #DataCrossSection | #DataGeo | #DataRHI
+
+comp: {
+	for w in whereObjects if list.Contains(w.versions, v) {
+		for l in w.locations {
+			"\(l)": {
+				for g in w.groups {
+					"\(g)": w.keys
+				}
+			}
+		}
+	}
+}
+
+#TopPolar: comp["top"]["polar"]
+#TopVertical: comp["top"]["vertical"]
+#TopCrossSection: comp["top"]["cross-section"]
+#TopGeo: comp["top"]["geo"]
+#TopRHI: comp["top"]["RHI"]
+
+#DatasetPolar: comp["dataset"]["polar"]
+#DatasetVertical: comp["dataset"]["vertical"]
+#DatasetCrossSection: comp["dataset"]["cross-section"]
+#DatasetGeo: comp["dataset"]["geo"]
+#DatasetRHI: comp["dataset"]["RHI"]
+
+#DataPolar: comp["data"]["polar"]
+#DataVertical: comp["data"]["vertical"]
+#DataCrossSection: comp["data"]["cross-section"]
+#DataGeo: comp["data"]["geo"]
+#DataRHI: comp["data"]["RHI"]
 //The group RHI and side-panel are not decisively clear on what they mean.
 // RHI is interpreted as a group, the side-panel section of the table is interpreted as data/dataset-specific values
 whereGroupNames: ["polar", "vertical", "cross-section", "geo", "RHI"]

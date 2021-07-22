@@ -67,7 +67,7 @@ versionTexts: {
 }
 v:     *vs[len(vs)-1] | string @tag(version)
 quant: or([ for q in #Quantities if list.Contains(q.versions, v) {q.name}])
-prod:  or([ for p in #Product if list.Contains(p.versions, v) {q.name}])
+prod:  or([ for p in #Product if list.Contains(p.versions, v) {p.name}])
 whereGroups: {
 	for w in whereObjects if list.Contains(w.versions, v) {
 		for l in w.locations {
@@ -85,7 +85,6 @@ whereGroups: {
 	quantity?: quant
 	product?:  prod
 }
-whereConst: dataset: or([ for g in whereGroups.dataset {g}])
 root: {
 	versionTexts[v]
 	#Root
@@ -93,19 +92,16 @@ root: {
 		source: sources[v]
 		object: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
 	}
-	_how: {for h in Hows if list.Contains(h.versions, v) {h.keys}}
-	how?: _how
-	[name=#DatasetName]: how?: _how
-	[name=#DatasetName]: [name=#DataName]: how?:    _how
-	[name=#DatasetName]: [name=#QualityName]: how?: _how
+	#how: close({for h in Hows if list.Contains(h.versions, v) {h.keys}})
+	how?: #how
+	[name=#DatasetName]: how?: #how
+	[name=#DatasetName]: [name=#DataName]: how?:    #how
+	[name=#DatasetName]: [name=#QualityName]: how?: #how
 
-	_topWhere:     or([ for g in whereGroups["top"] {g}])
-	_dataWhere:    or([ for g in whereGroups["data"] {g}])
-	_datasetWhere: or([ for g in whereGroups["dataset"] {g}])
-	where?:        _topWhere
-	[name=#DatasetName]: where?: _datasetWhere
-	[name=#DatasetName]: [name=#DataName]: where?:    _dataWhere
-	[name=#DatasetName]: [name=#QualityName]: where?: _dataWhere
+	where?:        topWhere
+	[name=#DatasetName]: where?: datasetWhere
+	[name=#DatasetName]: [name=#DataName]: where?:    dataWhere
+	[name=#DatasetName]: [name=#QualityName]: where?: dataWhere
 
 	[name=#DatasetName]: what?: #VersionDataWhat
 	[name=#DatasetName]: [name=#DataName]: what?:    #VersionDataWhat
