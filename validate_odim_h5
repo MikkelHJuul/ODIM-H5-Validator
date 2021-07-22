@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+help() {
+  echo "validate_odim_h5 is a script to strictly validate your"
+  echo "odim hdf5 files vs the specification's different versions."
+  echo "it consists of a simple python script that maps the h5file to json (in it's metadata form)"
+  echo "and cue files for describing and vetting the metadata"
+  echo
+  echo "dependencies: cue 0.4+, python 3.8+, jq 1.6, bash 4.4"
+  echo
+  echo "usage:"
+  echo "    validate_odim_h5 [-as <spec-vers>] <file> [-- <ignore-keys>]"
+  echo
+  echo "  spec-vers: ODIM Version to validate against fx. V2_0"
+  echo "  ignore-keys: list of attribute keys to ignore"
+  exit 2
+}
+
+f="$(mktemp)"
+[[ "$1" = '-as' ]] && _as=$2 && shift 2
+[[ "${#@}" -lt 1 || $* = *'--help'* ]] && help
+
+python3 ./hdf5_json.py "$@" > "$f"
+
+version="$(jq --raw-output '.Conventions' "$f")"
+version="${version##*/}"   # cut prefix(es) before /
+version="${_as:-$version}"
+
+versionErrText="the version to be validated against can't be determined, supply one using: [-as <ODIM Version to validate against fx. V2_0>]"
+
+useVersion="${version:?$versionErrText}"
+
+# presume version format V\d+_\d+ such that there is a value of H5rad \d+\.\d+
+dotVersion="${version/_/.}"
+dotVersion="${dotVersion#V}"  # remove 'V'
+
+replacement=".Conventions = \"ODIM_H5/$useVersion\" | .what.version = \"H5rad $dotVersion\""
+jq "$replacement" "$f" > test.json
+
+if cue vet -i test.json *.cue -d root -t version="$useVersion"; then
+    exit 0
+else
+    exit 1
+fi
