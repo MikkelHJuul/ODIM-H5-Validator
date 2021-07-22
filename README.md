@@ -10,7 +10,7 @@ The command
 ```
 maps the hdf5 file metadata to out. pipe that to a file and read using cue:
 ```shell
-> cue vet [--ignore] <my_output_file_from_python_script> *.cue -d 'roots[<Version text eg. V2_3>]'
+> cue vet [--ignore] <my_output_file_from_python_script> *.cue -d 'root' -t version=<version>
 ```
 This validates the output file vs. the data-specification written in [`odim_schema.cue`](odim_schema.cue).
 
@@ -26,5 +26,6 @@ This validates the output file vs. the data-specification written in [`odim_sche
  - `where`-objects are interpreted to require all the stated keys, deprecated members are allowed to be missing (RHI specific member `angles`, since v2.3)
  - `how` can in version 2.3 and up have allowed subgroups; generally the specification allow additional fields. The validation here does not! filter these using the python program's filter-mechanism. (this is safer than allowing anything, as the developer will then be required to double-check their errors; this weeds out spelling mistakes and earlier defined keys that were removed in the specification, requiring your validation to be specific about which fields to ignore)
  - the dataset (and group) `what` object has no specifically "required" attributes; allowed attributes are all allowed to be missing independently of all other sibling attributes.
- - This project does not offer validation of cross-cutting terms like: adding "vertical"-only where attributes at `dataset group` level encompassing data that is not of type: "vertical"; or `beamwidth` should be the length of `beamwH` and `beamwV` (which could easily fail because of rounding anyway).
+ - This project does not offer validation of cross-cutting terms like: adding "vertical"-only where attributes at `dataset group` level encompassing data that is not of type: "vertical".
+ - In v2.4 many `how`attributes became mandatory (for single radar products). Since the mandate is conditional, and have exceptions, I have left it out so far.
  
