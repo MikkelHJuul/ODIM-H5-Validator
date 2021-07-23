@@ -18,5 +18,4 @@ WORKDIR validate_odim_h5
 COPY *.cue ./
 COPY hdf5_json.py hdf5_json.py
 COPY validate_odim_h5 .
-RUN chmod +x ./validate_odim_h5
 ENTRYPOINT ["./validate_odim_h5"]
