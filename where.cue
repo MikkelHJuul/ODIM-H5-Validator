@@ -2,9 +2,9 @@ package odim_hdf5
 
 import "list"
 
-topWhere: #TopPolar | #TopVertical | #TopCrossSection | #TopGeo | #TopRHI
+topWhere:     #TopPolar | #TopVertical | #TopCrossSection | #TopGeo | #TopRHI
 datasetWhere: #DatasetPolar | #DatasetVertical | #DatasetCrossSection | #DatasetGeo | #DatasetRHI
-dataWhere: #DataPolar | #DataVertical | #DataCrossSection | #DataGeo | #DataRHI
+dataWhere:    #DataPolar | #DataVertical | #DataCrossSection | #DataGeo | #DataRHI
 
 comp: {
 	for w in whereObjects if list.Contains(w.versions, v) {
@@ -18,23 +18,24 @@ comp: {
 	}
 }
 
-#TopPolar: comp["top"]["polar"]
-#TopVertical: comp["top"]["vertical"]
+#TopPolar:        comp["top"]["polar"]
+#TopVertical:     comp["top"]["vertical"]
 #TopCrossSection: comp["top"]["cross-section"]
-#TopGeo: comp["top"]["geo"]
-#TopRHI: comp["top"]["RHI"]
+#TopGeo:          comp["top"]["geo"]
+#TopRHI:          comp["top"]["RHI"]
 
-#DatasetPolar: comp["dataset"]["polar"]
-#DatasetVertical: comp["dataset"]["vertical"]
+#DatasetPolar:        comp["dataset"]["polar"]
+#DatasetVertical:     comp["dataset"]["vertical"]
 #DatasetCrossSection: comp["dataset"]["cross-section"]
-#DatasetGeo: comp["dataset"]["geo"]
-#DatasetRHI: comp["dataset"]["RHI"]
+#DatasetGeo:          comp["dataset"]["geo"]
+#DatasetRHI:          comp["dataset"]["RHI"]
 
-#DataPolar: comp["data"]["polar"]
-#DataVertical: comp["data"]["vertical"]
+#DataPolar:        comp["data"]["polar"]
+#DataVertical:     comp["data"]["vertical"]
 #DataCrossSection: comp["data"]["cross-section"]
-#DataGeo: comp["data"]["geo"]
-#DataRHI: comp["data"]["RHI"]
+#DataGeo:          comp["data"]["geo"]
+#DataRHI:          comp["data"]["RHI"]
+
 //The group RHI and side-panel are not decisively clear on what they mean.
 // RHI is interpreted as a group, the side-panel section of the table is interpreted as data/dataset-specific values
 whereGroupNames: ["polar", "vertical", "cross-section", "geo", "RHI"]

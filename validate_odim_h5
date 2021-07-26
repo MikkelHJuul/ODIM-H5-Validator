@@ -9,36 +9,61 @@ help() {
   echo "dependencies: cue 0.4+, python 3.8+, jq 1.6, bash 4.4"
   echo
   echo "usage:"
-  echo "    validate_odim_h5 [-as <spec-vers>] <file> [-- <ignore-keys>]"
+  echo "    validate_odim_h5 [-as <spec-vers>] [-single-site|-S] [-mixed-polarization|-M] <file> [[--] <ignore-keys>]"
   echo
-  echo "  spec-vers: ODIM Version to validate against fx. V2_0"
-  echo "  ignore-keys: list of attribute keys to ignore"
+  echo "  spec-vers:                  ODIM Version to validate against fx. V2_0"
+  echo "  ignore-keys:                list of attribute keys to ignore"
+  echo "  -single-site|-S:            validate as a single-site hdf5 file"
+  echo "  -mixed-polarization|-M:     allow mixed polarization in how-attributes"
   exit 2
 }
 
 f="$(mktemp)"
-[[ "$1" = '-as' ]] && _as=$2 && shift 2
 [[ "${#@}" -lt 1 || $* = *'--help'* ]] && help
 
-python3 ./hdf5_json.py "$@" > "$f"
+cue_param=""
+while (( $# )) ; do
+  case "$1" in
+  -as|--as)
+    as="$2"
+    shift 2
+    ;;
+  -single-site|--single-site|-S)
+    cue_param="$cue_param"' -t single_site=true'
+    shift
+    ;;
+  -mixed-polarization|--mixed-polarization|-M)
+    cue_param="$cue_param"' -t mixed_polarization=true'
+    shift
+    ;;
+  --)
+    help  # this shouldn't be reachable
+    ;;
+  *)
+    file="$1"
+    shift
+    [[ "$1" = '--' ]] && shift  # re-expand '--' to allow for both syntax's (with and without '--')
+    break
+    ;;
+  esac
+done
+file="${file:?no file given to validate}"  # double-check for file
+python3 ./hdf5_json.py "$file" "${1+-- $@}" > "$f"
 
 version="$(jq --raw-output '.Conventions' "$f")"
 version="${version##*/}"   # cut prefix(es) before /
-version="${_as:-$version}"
+version="${as:-$version}"
 
-versionErrText="the version to be validated against can't be determined, supply one using: [-as <ODIM Version to validate against fx. V2_0>]"
-
+# must have version
+versionErrText="the version to be validated against can't be determined (via Conventions-tag), supply one using: [-as <ODIM Version to validate against fx. V2_0>]"
 useVersion="${version:?$versionErrText}"
 
 # presume version format V\d+_\d+ such that there is a value of H5rad \d+\.\d+
 dotVersion="${version/_/.}"
 dotVersion="${dotVersion#V}"  # remove 'V'
 
+#Inject version into the file
 replacement=".Conventions = \"ODIM_H5/$useVersion\" | .what.version = \"H5rad $dotVersion\""
 jq "$replacement" "$f" > test.json
 
-if cue vet -i test.json *.cue -d root -t version="$useVersion"; then
-    exit 0
-else
-    exit 1
-fi
+cue vet -i test.json *.cue -d root -t version="$useVersion" "$cue_param"

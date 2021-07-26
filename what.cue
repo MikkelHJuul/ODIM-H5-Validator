@@ -6,7 +6,6 @@ sources: {
 	"V2_1": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
 	"V2_2": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
 	"V2_3": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
-	//TODO V2_4 mandatory `NOD` for single-radar products...
 	"V2_4": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
 }
 
