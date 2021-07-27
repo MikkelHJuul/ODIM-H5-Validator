@@ -18,8 +18,27 @@ help() {
   exit 2
 }
 
-f="$(mktemp)"
-[[ "${#@}" -lt 1 || $* = *'--help'* ]] && help
+vFromConventions() {
+  version="$1"
+  override="$2"
+  version="${version##*/}"   # cut prefix(es) before /
+  version="${override:-$version}"
+
+  echo "$version"
+  [[ ! ${version+x} ]] && return 1
+}
+
+dotVersionText() {
+  tmpV="${1/_/.}"    # replace '_' with '.'
+  echo "${tmpV#V}"   # Remove prefixed 'V'
+}
+
+err() {
+  echo "$1" >&2
+  exit 1
+}
+
+[[ "${#@}" -lt 1 || $* = *'--help'* ]] && help >&2
 
 cue_param=""
 while (( $# )) ; do
@@ -37,7 +56,7 @@ while (( $# )) ; do
     shift
     ;;
   --)
-    help  # this shouldn't be reachable
+    help >&2  # this shouldn't be reachable
     ;;
   *)
     file="$1"
@@ -47,23 +66,27 @@ while (( $# )) ; do
     ;;
   esac
 done
-file="${file:?no file given to validate}"  # double-check for file
-python3 ./hdf5_json.py "$file" "${1+-- $@}" > "$f"
+file="${file:?no file given to validate}"
+if ! [[ -f "$file" ]]; then
+  echo "invalid file" >&2
+  exit 1
+fi
+f="$(mktemp)"
 
-version="$(jq --raw-output '.Conventions' "$f")"
-version="${version##*/}"   # cut prefix(es) before /
-version="${as:-$version}"
+if ! python3 ./hdf5_json.py "$file" "${1+-- $@}" > "$f"; then
+  err "error running python command"
+fi
 
-# must have version
-versionErrText="the version to be validated against can't be determined (via Conventions-tag), supply one using: [-as <ODIM Version to validate against fx. V2_0>]"
-useVersion="${version:?$versionErrText}"
+if ! version="$(vFromConventions "$(jq --raw-output '.Conventions' "$f")" "$as")"; then
+  err "the version to be validated against can't be determined (via Conventions-tag), supply one using: [-as <ODIM Version to validate against fx. V2_0>]" >&2
+fi
 
-# presume version format V\d+_\d+ such that there is a value of H5rad \d+\.\d+
-dotVersion="${version/_/.}"
-dotVersion="${dotVersion#V}"  # remove 'V'
+dotVersion="$(dotVersionText "$version")"
 
 #Inject version into the file
-replacement=".Conventions = \"ODIM_H5/$useVersion\" | .what.version = \"H5rad $dotVersion\""
-jq "$replacement" "$f" > test.json
-
-cue vet -i test.json *.cue -d root -t version="$useVersion" "$cue_param"
+replacement=".Conventions = \"ODIM_H5/$version\" | .what.version = \"H5rad $dotVersion\""
+if jq "$replacement" "$f" > test.json; then
+  cue vet --ignore test.json ./*.cue -d root -t version="$version" "$cue_param"
+else
+  err "could not replace version texts" >&2
+fi
