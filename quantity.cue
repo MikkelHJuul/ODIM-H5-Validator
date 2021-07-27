@@ -1,8 +1,8 @@
 package odim_hdf5
 
-#Quantities: [...#VersionEnum]
+quantities: [...#VersionEnum]
 
-#Quantities: [
+quantities: [
 	#VersionEnum & {
 		name:        "SQI"
 		description: "Signal quality index"

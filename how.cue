@@ -1,14 +1,6 @@
 package odim_hdf5
 
-import ( "list"
-
-	//howGroups: ["quality", "vertical", "cartesian", "polar", "single-radar"]
-	//general: howGroups
-	//allowedHowGroups: or(how)
-	//#HowVersionObject: #VersionObject & {
-	// groups: [...allowedHowGroups] | *general
-	//}
-)
+import "list"
 
 #HowVersionObject: #VersionObject & {
 	groups: ["h", "v"]
@@ -874,7 +866,7 @@ Methods: [
 	#VersionEnum & {
 		name:        "QAVERAGE"
 		description: "Quality-weighted average"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "RANDOM"
@@ -895,7 +887,7 @@ Methods: [
 	#VersionEnum & {
 		name:        "QMAXIMUM"
 		description: "Maximum quality"
-		versions: ["V2_3", "V2_4"]
+		versions:    from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "DOMAIN"

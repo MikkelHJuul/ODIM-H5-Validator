@@ -47,12 +47,12 @@ allowedWhereGroups: or(whereGroupNames)
 
 whereObjects: [
 	#WhereObject & {
-		keys: lat: float64
+		keys: lat: float64 & >0
 		description: "Latitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["polar", "vertical", "RHI"]
 	},
 	#WhereObject & {
-		keys: lon: float64
+		keys: lon: float64 & >0
 		description: "Longitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["polar", "vertical", "RHI"]
 	},
@@ -62,8 +62,8 @@ whereObjects: [
 		groups: ["polar", "vertical"]
 	},
 	#WhereObject & {
-		keys: elangle: float64
-		description: "  //Antenna elevation angle (degrees) above the horizon."
+		keys: elangle: >=0 & <=90
+		description: "Antenna elevation angle (degrees) above the horizon."
 		groups: ["polar"]
 		locations: ["dataset"]
 	},
@@ -80,13 +80,13 @@ whereObjects: [
 		locations: ["dataset"]
 	},
 	#WhereObject & {
-		keys: rstart: float64
+		keys: rstart: float64 & >0
 		description: "The range (km) of the start of the first range bin"
 		groups: ["polar"]
 		locations: ["dataset"]
 	},
 	#WhereObject & {
-		keys: rscale: float64
+		keys: rscale: float64 & >0
 		description: "The distance in meters between two successive range bins"
 		groups: ["polar"]
 		locations: ["dataset"]
@@ -186,42 +186,42 @@ whereObjects: [
 		groups: ["geo", "cross-section", "RHI"]
 	},
 	#WhereObject & {
-		keys: LL_lon: float64
+		keys: LL_lon: float64 & >0
 		description: "Longitude of the lower left corner of the lower left pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: LL_lat: float64
+		keys: LL_lat: float64 & >0
 		description: "Latitude of the lower left corner of the lower left pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: UL_lon: float64
+		keys: UL_lon: float64 & >0
 		description: "Longitude of the upper left corner of the upper left pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: UL_lat: float64
+		keys: UL_lat: float64 & >0
 		description: "Latitude of the upper left corner of the upper left pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: UR_lon: float64
+		keys: UR_lon: float64 & >0
 		description: "Longitude of the upper right corner of the upper right pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: UR_lat: float64
+		keys: UR_lat: float64 & >0
 		description: "Latitude of the upper right corner of the upper right pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: LR_lon: float64
+		keys: LR_lon: float64 & >0
 		description: "Longitude of the lower right corner of the lower right pixel"
 		groups: ["geo"]
 	},
 	#WhereObject & {
-		keys: LR_lat: float64
+		keys: LR_lat: float64 & >0
 		description: "Latitude of the lower right corner of the lower right pixel"
 		groups: ["geo"]
 	},
@@ -268,25 +268,25 @@ whereObjects: [
 		groups: ["vertical"]
 	},
 	#WhereObject & {
-		keys: start_lon: float64
+		keys: start_lon: float64 & >0
 		description: "Start position’s longitude"
 		groups: ["cross-section", "RHI"]
 		locations: ["dataset", "data"]
 	},
 	#WhereObject & {
-		keys: start_lat: float64
+		keys: start_lat: float64 & >0
 		description: "Start position’s latitude"
 		groups: ["cross-section", "RHI"]
 		locations: ["dataset", "data"]
 	},
 	#WhereObject & {
-		keys: stop_lon: float64
+		keys: stop_lon: float64 & >0
 		description: "Stop position’s longitude"
 		groups: ["cross-section", "RHI"]
 		locations: ["dataset", "data"]
 	},
 	#WhereObject & {
-		keys: stop_lat: float64
+		keys: stop_lat: float64 & >0
 		description: "Stop position’s latitude"
 		groups: ["cross-section", "RHI"]
 		locations: ["dataset", "data"]

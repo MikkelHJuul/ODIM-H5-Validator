@@ -2,9 +2,9 @@ package odim_hdf5
 
 import "list"
 
-#DatasetName: =~"dataset[0-9]{1,3}" // 1000 are quite a lot, but hey, why not??
-#DataName:    =~"data[0-9]{1,3}"
-#QualityName: =~"quality[0-9]{1,3}"
+#DatasetName: =~"dataset[0-9]+"
+#DataName:    =~"data[0-9]+"
+#QualityName: =~"quality[0-9]+"
 
 #Group: {
 	what?: #DataWhat
@@ -67,9 +67,9 @@ versionTexts: {
 }
 v: *vs[len(vs)-1] | string @tag(version)
 
-quant: or([ for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+quant: or([ for q in quantities if list.Contains(q.versions, v) {q.name}])
 
-prod: or([ for p in #Product if list.Contains(p.versions, v) {p.name}])
+prod: or([ for p in product if list.Contains(p.versions, v) {p.name}])
 
 whereGroups: {
 	for w in whereObjects if list.Contains(w.versions, v) {
@@ -95,8 +95,8 @@ root: {
 	versionTexts[v]
 	#Root
 	what: {
-		source: sources[v]
-		object: or([ for o in #Objects if list.Contains(o.versions, v) {o.name}])
+		source: =~ whatSourceRegex
+		object: or([ for o in objects if list.Contains(o.versions, v) {o.name}])
 	}
 	if mixedPol {
 		#how: close({for h in Hows if list.Contains(h.versions, v) {h.keys}})

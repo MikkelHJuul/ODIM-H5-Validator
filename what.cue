@@ -1,16 +1,48 @@
 package odim_hdf5
 
-//?? generate ??
-sources: {
-	"V2_0": =~"^(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+)(,(WMO|RAD|ORG|PLC|CTY|CMT):([^,]+))*$"
-	"V2_1": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-	"V2_2": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD):([^,]+))*$"
-	"V2_3": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
-	"V2_4": =~"^(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+?)(,(WMO|RAD|ORG|PLC|CTY|CMT|NOD|WIGOS):([^,]+))*$"
-}
+import "strings"
+
+sources: [
+	#VersionEnum & {
+		name:        "WMO"
+		description: "Combined WMO block and station number in the form A1bwnnnnn, or 0 if none assignede -- WMO:02954"
+	},
+	#VersionEnum & {
+		name:        "RAD"
+		description: "Radar site as indexed in the OPERA database -- RAD:FI44"
+	},
+	#VersionEnum & {
+		name:        "PLC"
+		description: "Place according to the left column of Table -- PLC:Anjalankoski"
+	},
+	#VersionEnum & {
+		name:        "NOD"
+		description: "Node according to the right column of Table. Mandatory to identify single-site data(v2.4) -- NOD:fianj"
+		versions:    from["V2_1"]
+	},
+	#VersionEnum & {
+		name:        "ORG"
+		description: "Originating centre according to BUFR descriptor 0 01 033. Mandatory to identify composites (v2.4) -- ORG:86"
+	},
+	#VersionEnum & {
+		name:        "CTY"
+		description: "Country according to BUFR descriptor 0 01 101 -- CTY:613"
+	},
+	#VersionEnum & {
+		name:        "CMT"
+		description: "Comment: allowing for a variable-length string -- CMT:Some comment"
+	},
+	#VersionEnum & {
+		name:        "WIGOS"
+		description: "Combined WMO block and station number in the form A1bwnnnnn, or 0 if none assignede -- WIGOS:0-246-0-101234"
+		versions:    from["V2_3"]
+	},
+]
+_sourceList:     strings.Join([ for s in sources if list.Contains(s.versions, v) {s.name}], "|")
+whatSourceRegex: "^(\(_sourceList)):([^,]+?)(,(\(_sourceList)):([^,]+))*$"
 
 //Table 2
-#Objects: [
+objects: [
 	#VersionEnum & {
 		name:        "PVOL"
 		description: "Polar volume"
@@ -73,7 +105,7 @@ sources: {
 	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
 })
 
-#Product: [
+product: [
 	#VersionEnum & {
 		name:        "SCAN"
 		description: "A scan of polar data"
