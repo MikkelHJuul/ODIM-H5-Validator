@@ -66,9 +66,3 @@ allowedLocations:                or(locs)
 	locations:                          [...allowedLocations] | *locs
 	groups: [...string]
 })
-
-#VersionLocationTree: {
-	[name=supportedVersions]: [name=allowedLocations]: [string]: _
-}
-
-aV: vs[len(vs)-1]

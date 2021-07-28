@@ -360,7 +360,7 @@ Hows: [
 
 	for v in from["V2_3"] {
 		#HowVersionObject & {
-			keys: scan_optimized?: or([ for q in #Quantities if list.Contains(q.versions, v) {q.name}])
+			keys: scan_optimized?: or([ for q in quantities if list.Contains(q.versions, v) {q.name}])
 			description: "Scan optimized for quantity [DBZH; VRADH; etc.]"
 			versions: [v]
 		}

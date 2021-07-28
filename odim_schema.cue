@@ -95,7 +95,7 @@ root: {
 	versionTexts[v]
 	#Root
 	what: {
-		source: =~ whatSourceRegex
+		source: =~whatSourceRegex
 		object: or([ for o in objects if list.Contains(o.versions, v) {o.name}])
 	}
 	if mixedPol {

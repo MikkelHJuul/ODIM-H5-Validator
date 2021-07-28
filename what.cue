@@ -1,6 +1,9 @@
 package odim_hdf5
 
-import "strings"
+import (
+	"strings"
+	"list"
+)
 
 sources: [
 	#VersionEnum & {
