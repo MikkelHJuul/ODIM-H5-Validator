@@ -26,15 +26,6 @@ ODIMBool: "True" | "False"
 
 //meta-types start here
 
-vs: ["V2_0", "V2_1", "V2_2", "V2_3", "V2_4"]
-supportedVersions: or(vs)
-
-from: [name=supportedVersions]: [...supportedVersions]
-
-for i, v in vs {
-	from: "\(v)": vs[i:len(vs)]
-}
-
 //for generating e.g. enum-sets via the "name" attribute
 //note, the description is added purely as metadata, I do not expect to ever use it.
 //use something like:

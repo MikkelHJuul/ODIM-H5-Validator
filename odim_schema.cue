@@ -41,32 +41,6 @@ import "list"
 	what: version: string
 })
 
-versionTexts: [name=supportedVersions]: #VersionItems
-
-versionTexts: {
-	"V2_4": #VersionItems & {
-		Conventions: "ODIM_H5/V2_4"
-		what: version: "H5rad 2.4"
-	}
-	"V2_3": #VersionItems & {
-		Conventions: "ODIM_H5/V2_3"
-		what: version: "H5rad 2.3"
-	}
-	"V2_2": #VersionItems & {
-		Conventions: "ODIM_H5/V2_2"
-		what: version: "H5rad 2.2"
-	}
-	"V2_1": #VersionItems & {
-		Conventions: "ODIM_H5/V2_1"
-		what: version: "H5rad 2.1"
-	}
-	"V2_0": #VersionItems & {
-		Conventions: "ODIM_H5/V2_0"
-		what: version: "H5rad 2.0"
-	}
-}
-v: *vs[len(vs)-1] | string @tag(version)
-
 quant: or([ for q in quantities if list.Contains(q.versions, v) {q.name}])
 
 prod: or([ for p in product if list.Contains(p.versions, v) {p.name}])
