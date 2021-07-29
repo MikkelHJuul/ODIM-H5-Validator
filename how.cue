@@ -2,8 +2,10 @@ package odim_hdf5
 
 import "list"
 
+_howGroups: ["h", "v"]
+#allowedHowGroups: or(_howGroups)
 #HowVersionObject: #VersionObject & {
-	groups: ["h", "v"]
+	groups: *_howGroups | [...#allowedHowGroups]
 }
 
 Hows: [...#HowVersionObject]
@@ -259,12 +261,12 @@ Hows: [
 		versions:    from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: pulsewidth?: float64
+		keys: pulsewidth?: float64 & >0
 		description: "Pulsewidth in µs"
 		versions: ["V2_0", "V2_1", "V2_2", "V2_3"]
 	},
 	#HowVersionObject & {
-		keys: pulsewidth?: float64
+		keys: pulsewidth?: float64 & >0 & <0.1
 		description: "seconds - Pulsewidth"
 		versions:    from["V2_4"]
 	},

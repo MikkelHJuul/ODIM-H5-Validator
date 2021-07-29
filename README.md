@@ -58,7 +58,7 @@ I have now interpreted values to not be allowed to mix both `*H` and `*V` attrib
  - the `dataset` (and `data` group) `what` object has no specifically "required" attributes; allowed attributes are all allowed to be missing independently of all other sibling attributes.
  - This project does not offer validation of cross-cutting terms like: adding "vertical" only `where`-attributes at `dataset` group level encompassing data that is not of type: "vertical".
  - only `how` and `where`-attribute groups inherit from their "parents".
-
+ - v2.4 `how/pulsewidth` changed from µs to s. I have tried guarding this by validating the v2.4 pulsewidth to be between 0 s and 0.1 s, as pulsewidths are in the µs range (a very wide pulse, above 100 µs probably, would shadow echoes, see [wiki](https://en.wikipedia.org/wiki/Radar_signal_characteristics#Pulse_width)), if you try to express a value in µs after v2.4 you should correct this to seconds. 
 
 ## TODO
  - restructure to validate without referencing `root` such that the `cue` command become: `cue vet <json> . -t version=<version> ...`
