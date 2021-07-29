@@ -8,8 +8,10 @@ _howGroups: ["h", "v"]
 	groups: *_howGroups | [...#allowedHowGroups]
 }
 
-Hows: [...#HowVersionObject]
-Hows: [
+#method: or([ for m in _methods if list.Contains(m.versions, _v) {m.name}])
+
+_hows: [...#HowVersionObject]
+_hows: [
 	#HowVersionObject & {
 		keys: task?: string
 		description: "Name of the acquisition task or product generator"
@@ -17,7 +19,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: task_args?: string
 		description: "Task arguments"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: beamwidth?: float64 & >=0 & <=360
@@ -28,13 +30,13 @@ Hows: [
 	#HowVersionObject & {
 		keys: beamwH?: float64 & >=0 & <=360
 		description: "Horizontal half-power (-3 dB) beamwidth in degrees"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: beamwV?: float64 & >=0 & <=360
 		description: "Vertical half-power (-3 dB) beamwidth in degrees"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
@@ -46,7 +48,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: RXbandwidth?: float64 & >0
 		description: "Bandwidth in MHz that the receiver is set to when operating the radar with the above mentioned pulsewidth"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: RXloss?: float64 & >0
@@ -56,37 +58,37 @@ Hows: [
 	#HowVersionObject & {
 		keys: RXlossH?: float64 & >0
 		description: "Total loss in dB in the receiving chain for horizontally-polarized signals, defined as the losses that occur between the antenna reference point and the receiver, inclusive."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: RXlossV?: float64 & >0
 		description: "Total loss in dB in the receiving chain for vertically-polarized signals, defined as the losses that occur between the antenna reference point and the receiver, inclusive."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: antgainH?: float64 & >0
 		description: "Antenna gain in dB for horizontally-polarized signals"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: antgainV?: float64 & >0
 		description: "Antenna gain in dB for vertically-polarized signals"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: radconstH?: float64 & >0
 		description: "Radar constant in dB for the horizontal channel. For the precise definition, see Appendix A"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: radconstV?: float64 & >0
 		description: "Radar constant in dB for the vertical channel. For the precise definition, see Appendix A"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
@@ -96,28 +98,28 @@ Hows: [
 	#HowVersionObject & {
 		keys: scan_index?: uint
 		description: "Which scan this is in the temporal sequence (starting with 1) of the total float64 of scans comprising the volume."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: scan_count?: uint
 		description: "The total number of scans comprising the volume."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 
 	#HowVersionObject & {
 		keys: astart?: float64
 		description: "Azimuthal offset in degrees (◦) from 0◦ of the start of the first ray in the sweep. This value is positive where the gate starts clockwise after 0◦,and it will be negative if it starts before 0◦ . In either case, the value must be no larger than half a ray’s width."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
-		keys: startazA?: simpleArrayOfDoubles
+		keys: startazA?: #simpleArrayOfDoubles
 		description: "Azimuthal start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
-		keys: stopazA?: simpleArrayOfDoubles
+		keys: stopazA?: #simpleArrayOfDoubles
 		description: "Azimuthal stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: NEZ?: float64
@@ -127,13 +129,13 @@ Hows: [
 	#HowVersionObject & {
 		keys: NEZH?: float64
 		description: "The total system noise expressed as the horizontally-polarized reflectivity (dBZ) it would represent at one km distance from the radar."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: NEZV?: float64
 		description: "The total system noise expressed as the vertically-polarized reflectivity (dBZ) it would represent at one km distance from the radar."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 
 	},
@@ -144,17 +146,17 @@ Hows: [
 	#HowVersionObject & {
 		keys: LOG_threshold?: float64
 		description: "Security distance above mean noise level (dB) threshold value."
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: extensions?: string
 		description: "Name of the extensions of `/what/version`"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: data_origin?: sequence
+		keys: data_origin?: #sequence
 		description: "If a quantity or quality field has been modified, the originating quantity or quality field together with the applied quantity or quality field(s) should be provided, e.g. [/datasetM/dataN, /datasetM/dataN/qualityP] or [DBZH, se.smhi.detector.beamblockage]."
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: startepochs?: int
@@ -169,12 +171,12 @@ Hows: [
 	#HowVersionObject & {
 		keys: startepochs?: float64
 		description: "Seconds after a standard 1970 epoch for which the starting time of the data/product is valid. A compliment to “date” and “time” in Table 1, for those who prefer to calculate times directly in epoch seconds."
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: endepochs?: float64
 		description: "Seconds after a standard 1970 epoch for which the ending time of the data/product is valid. A compliment to “date” and “time” in Table 1, for those who prefer to calculate times directly in epoch seconds."
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: system?: string //allows anything from the specification
@@ -187,7 +189,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: TXtype?: "magnetron" | "klystron" | "solid state"
 		description: "Transmitter type [magnetron; klystron; solid state]"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: sw_version?: string & =~"^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?$"
@@ -196,12 +198,12 @@ Hows: [
 	#HowVersionObject & {
 		keys: poltype?: "single" | "simultaneous-dual" | "switched-dual"
 		description: "Polarization type of the radar [single; simultaneous-dual; switched-dual]"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: polmode?: "LDR-H" | "single-H" | "LDR-V" | "single-V" | "simultaneous-dual" | "switched-dual"
 		description: "Current polarity mode [LDR-H; single-H; LDR-V; single-V; simultaneous-dual; switched-dual]"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: zr_a?: float64
@@ -220,27 +222,27 @@ Hows: [
 		description: "Kdp-R exponent b in R = a Kdp b"
 	},
 	#HowVersionObject & {
-		keys: zr_a_A?: simpleArrayOfDoubles
+		keys: zr_a_A?: #simpleArrayOfDoubles
 		description: "Z-R constant a in Z = a Rb, applicable to any product containing reflectivity or precipitation data"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: zr_b_A?: simpleArrayOfDoubles
+		keys: zr_b_A?: #simpleArrayOfDoubles
 		description: "Z-R exponent b in Z = a Rb, applicable to any product containing reflectivity or precipitation data"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: kr_a_A?: simpleArrayOfDoubles
+		keys: kr_a_A?: #simpleArrayOfDoubles
 		description: "Kdp-R constant a in R = a Kdp b"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: kr_b_A?: simpleArrayOfDoubles
+		keys: kr_b_A?: #simpleArrayOfDoubles
 		description: "Kdp-R exponent b in R = a Kdp b"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: simulated?: ODIMBool
+		keys: simulated?: #ODIMBool
 		description: "“True” if data are simulated, otherwise “False”"
 	},
 	#HowVersionObject & {
@@ -258,7 +260,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: antspeed?: float64
 		description: "Antenna speed in degrees/s (positive for clockwise and ascending, negative for counter-clockwise and descending)"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: pulsewidth?: float64 & >0
@@ -268,7 +270,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: pulsewidth?: float64 & >0 & <0.1
 		description: "seconds - Pulsewidth"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: lowprf?: float64
@@ -277,7 +279,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: midprf?: float64
 		description: "Intermediate pulse repetition frequency in Hz"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: highprf?: float64
@@ -291,25 +293,25 @@ Hows: [
 	#HowVersionObject & {
 		keys: TXlossH?: float64
 		description: "Total loss in dB in the transmission chain for horizontallypolarized signals, defined as the losses that occur between the calibration reference plane and the feed horn, inclusive."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: TXlossV?: float64
 		description: "Total loss in dB in the transmission chain for verticallypolarized signals, defined as the losses that occur between the calibration reference plane and the feed horn, inclusive."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: injectlossH?: float64
 		description: "Total loss in dB between the calibration reference plane and the test signal generator for horizontally-polarized signals."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: injectlossV?: float64
 		description: "Total loss in dB between the calibration reference plane and the test signal generator for vertically-polarized signals."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
@@ -320,197 +322,186 @@ Hows: [
 	#HowVersionObject & {
 		keys: radomelossH?: float64
 		description: "One-way dry radome loss in dB for horizontally-polarized signals"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: radomelossV?: float64
 		description: "One-way dry radome loss in dB for vertically-polarized signals"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: gasattn?: float64
 		description: "Gaseous specific attenuation in dB/km assumed by the radar processor (zero if no gaseous attenuation is assumed)"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: nomTXpower?: float64
 		description: "Nominal transmitted peak power in kW at the output of the transmitter (magnetron/klystron output flange)"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
-		keys: TXpower?: simpleArrayOfDoubles
+		keys: TXpower?: #simpleArrayOfDoubles
 		description: "Transmitted peak power in kW at the calibration reference plane. The values given are average powers over all transmitted pulses in each azimuth gate. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: powerdiff?: float64
 		description: "Power difference between transmitted horizontally and vertically-polarized signals in dB at the the feed horn."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: phasediff?: float64
 		description: "Phase difference in degrees between transmitted horizontally and vertically-polarized signals as determined from the first valid range bins"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: Vsamples?: int
 		description: "Number of samples used for radial velocity measurements"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 
-	for v in from["V2_3"] {
-		#HowVersionObject & {
-			keys: scan_optimized?: or([ for q in quantities if list.Contains(q.versions, v) {q.name}])
-			description: "Scan optimized for quantity [DBZH; VRADH; etc.]"
-			versions: [v]
-		}
+	#HowVersionObject & {
+		keys: scan_optimized?: #quant
+		description: "Scan optimized for quantity [DBZH; VRADH; etc.]"
+		versions: [_v]
 	},
-	for v in vs {
-		#HowVersionObject & {
-			keys: azmethod?: methodMap[v]
-			description: "How raw data in azimuth are processed to arrive at the given value, according to Table 13"
-		}
+	#HowVersionObject & {
+		keys: azmethod?: #method
+		description: "How raw data in azimuth are processed to arrive at the given value, according to Table 13"
+		versions: [_v]
 	},
 
-	for v in from["V2_2"] {
-		#HowVersionObject & {
-			keys: elmethod?: methodMap[v]
-			description: "How raw data in elevation are processed to arrive at the given value, according to Table 13"
-			versions: [v]
-		}
+	#HowVersionObject & {
+		keys: elmethod?: #method
+		description: "How raw data in elevation are processed to arrive at the given value, according to Table 13"
+		versions: [_v]
 	},
-	for v in vs {
-		#HowVersionObject & {
-			keys: binmethod?: methodMap[v]
-			description: "How raw data in range are processed to arrive at the given value, according to Table 13"
-			versions: [v]
-		}
+	#HowVersionObject & {
+		keys: binmethod?: #method
+		description: "How raw data in range are processed to arrive at the given value, according to Table 13"
+		versions: [_v]
 	},
-	for v in vs {
-		#HowVersionObject & {
-			keys: camethod?:
-				description: "How cartesian data are processed, according to Table 12/13"
-			versions: [v]
-		}
+	#HowVersionObject & {
+		keys: camethod?: #method
+		description: "How cartesian data are processed, according to Table 12/13"
+		versions: [_v]
 	},
 
 	#HowVersionObject & {
 		keys: binmethod_avg?: uint
 		description: "How many original data elements in range are averaged to arrive at the given value."
-		versions:    from["V2_3"]
-	},
-
-	for v in from["V2_4"] {
-		#HowVersionObject & {
-			keys: vpmethod?: methodMap[v]
-			description: "Applied method to derive the vertical profile [VAD; VVP; etc.]"
-			versions: [v]
-		}
+		versions:   _from["V2_3"]
 	},
 
 	#HowVersionObject & {
-		keys: elangles?: simpleArrayOfDoubles
+		keys: vpmethod?: #method
+		description: "Applied method to derive the vertical profile [VAD; VVP; etc.]"
+		versions: [_v]
+	},
+
+	#HowVersionObject & {
+		keys: elangles?: #simpleArrayOfDoubles
 		description: "Elevation angles (degrees above the horizon) used for each azimuth gate in an “intelligent” scan that e.g. follows the horizon. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
 		versions: ["V2_0", "V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: azangles?: sequenceOfPairs
+		keys: azangles?: #sequenceOfPairs
 		description: "Azimuthal start and stop angles (degrees) used for each azumith gate in a scan. The format for each start-stop pair of angles is ’start:stop’ and each pair is separated by a comma."
 		versions: ["V2_0"]
 	},
 	#HowVersionObject & {
-		keys: aztimes?: sequenceOfPairs
+		keys: aztimes?: #sequenceOfPairs
 		description: "Acquisition start and stop times for each azimuth gate in the sector or scan. The format for each start-stop pair of times is ’HHMMSS.sss:HHMMSS.sss’ and each pair is separated by a comma. The required precision is to the millisecond."
 		versions: ["V2_0"]
 	},
 
 	#HowVersionObject & {
-		keys: startazT?: simpleArrayOfDoubles
+		keys: startazT?: #simpleArrayOfDoubles
 		description: "Acquisition start times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 
 	#HowVersionObject & {
-		keys: stopazT?: simpleArrayOfDoubles
+		keys: stopazT?: #simpleArrayOfDoubles
 		description: "Acquisition stop times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: startazA?: simpleArrayOfDoubles
+		keys: startazA?: #simpleArrayOfDoubles
 		description: "Azimuthal start angles (degrees) used for each azimuth gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset"
 		versions: ["V2_1", "V2_2"]
 	},
 	#HowVersionObject & {
-		keys: stopazA?: simpleArrayOfDoubles
+		keys: stopazA?: #simpleArrayOfDoubles
 		description: "Azimuthal stop angles (degrees) used for each azimuth gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions: ["V2_1", "V2_2"]
 	},
 	#HowVersionObject & {
-		keys: startelA?: simpleArrayOfDoubles
+		keys: startelA?: #simpleArrayOfDoubles
 		description: "Elevational start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
-		keys: stopelA?: simpleArrayOfDoubles
+		keys: stopelA?: #simpleArrayOfDoubles
 		description: "Elevational stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 
 	#HowVersionObject & {
-		keys: startelT?: simpleArrayOfDoubles
+		keys: startelT?: #simpleArrayOfDoubles
 		description: "Acquisition start times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: stopelT?: simpleArrayOfDoubles
+		keys: stopelT?: #simpleArrayOfDoubles
 		description: "Acquisition stop times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: startT?: simpleArrayOfDoubles
+		keys: startT?: #simpleArrayOfDoubles
 		description: "Acquisition start times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: stopT?: simpleArrayOfDoubles
+		keys: stopT?: #simpleArrayOfDoubles
 		description: "Acquisition stop times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 
 	#HowVersionObject & {
-		keys: top_heights?: simpleArrayOfDoubles
+		keys: top_heights?: #simpleArrayOfDoubles
 		description: "Layer top heights (meter) above mean sea level"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: bottom_heights?: simpleArrayOfDoubles
+		keys: bottom_heights?: #simpleArrayOfDoubles
 		description: "Layer bottom heights (meter) above mean sea level"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
-		keys: angles?: simpleArrayOfDoubles
+		keys: angles?: #simpleArrayOfDoubles
 		description: "Elevation angles in the order in which they were acquired, used to generate the product"
 	},
 	#HowVersionObject & {
-		keys: arotation?: simpleArrayOfDoubles
+		keys: arotation?: #simpleArrayOfDoubles
 		description: "Antenna rotation speed in degrees/s (positive for clockwise, negative for counter-clockwise). The float64 of values in this array corresponds with the values of how/angles described above."
 	},
 	#HowVersionObject & {
-		keys: nodes?: sequenceOfNodes | =~"[a-z]{3}(,[a-z]{3})*" //list of three letter (no country) nodes, not mixed, allow forward-compatibility
+		keys: nodes?: #sequenceOfNodes | =~"[a-z]{3}(,[a-z]{3})*" //list of three letter (no country) nodes, not mixed, allow forward-compatibility
 		description: "Radar nodes (Table 10) which have contributed data to the composite, e.g. “’searl’, ’noosl’, ’sease’, ’fikor”’"
 		versions: ["V2_0"]
 	},
 	#HowVersionObject & {
-		keys: nodes?: sequenceOfNodes
+		keys: nodes?: #sequenceOfNodes
 		description: "Radar nodes (Table 10) which have contributed data to the composite, e.g. “’searl’, ’noosl’, ’sease’, ’fikor”’"
-		versions:    from["V2_1"]
+		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: ACCnum?: uint
@@ -533,22 +524,22 @@ Hows: [
 		description: "Antenna pointing accuracy in azimuth (degrees). Possible pointing errors in azimuth include e.g. non-linearities in gears, backlash in gearboxes, and uncertainties in angle adjustment e.g. using the sun."
 	},
 	#HowVersionObject & {
-		keys: sample_size?: simpleArrayOfUInts
+		keys: sample_size?: #simpleArrayOfUInts
 		description: "Number of valid data points in a level of a vertical profile. The float64 of values in this array corresponds with the value of where/levels for that dataset. dealiased boolean “True” if data has been dealiased, “False” if not"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: anglesync?: "azimuth" | "elevation"
 		description: "Antenna angle synchronization mode [azimuth; elevation]"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: anglesyncRes?: float64
 		description: "Resolution of angle synchronization in degrees"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
-		keys: malfunc?: ODIMBool
+		keys: malfunc?: #ODIMBool
 		description: "Radar malfunction indicator. If a quantity should not be used for any application due to radar hardware and/or software failure, how/malfunc should be “True”, otherwise “False”."
 	},
 	#HowVersionObject & {
@@ -564,57 +555,57 @@ Hows: [
 		description: "Overall uptime reliability (%)"
 	},
 	#HowVersionObject & {
-		keys: Dclutter?: sequence
+		keys: Dclutter?: #sequence
 		description: "Doppler clutter filters used when collecting data"
 	},
 	#HowVersionObject & {
 		keys: clutterType?: string
 		description: "Description of clutter filter used in the signal processor"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: clutterMap?: string
 		description: "Filename of clutter map"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: zcalH?: float64
 		description: "Calibration offset in dB for the horizontal channel"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: zcalV?: float64
 		description: "Calibration offset in dB for the vertical channel"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: zdrcal?: float64
 		description: "ZDR calibration offset in dB"
-		versions:    from["V2_3"]
+		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: nsampleH?: float64
 		description: "Noise sample in dB for the horizontal channel"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: nsampleV?: float64
 		description: "Noise sample in dB for the vertical channel"
-		versions:    from["V2_2"]
+		versions:   _from["V2_2"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
-		keys: nsampleH_A?: simpleArrayOfDoubles
+		keys: nsampleH_A?: #simpleArrayOfDoubles
 		description: "Noise sample for the horizontal channel. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: nsampleV_A?: simpleArrayOfDoubles
+		keys: nsampleV_A?: #simpleArrayOfDoubles
 		description: "Noise sample for the vertical channel. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: comment?: string
@@ -629,7 +620,7 @@ Hows: [
 		description: "Clutter-to-signal ratio threshold value"
 	},
 	#HowVersionObject & {
-		keys: VPRCorr?: ODIMBool
+		keys: VPRCorr?: #ODIMBool
 		description: "“True” if vertical reflectivity profile correction has been applied, otherwise “False”"
 	},
 	#HowVersionObject & {
@@ -639,34 +630,34 @@ Hows: [
 		versions: ["V2_0", "V2_1", "V2_2", "V2_3"]
 	},
 	#HowVersionObject & {
-		keys: melting_layer_top?: simpleArrayOfDoubles
+		keys: melting_layer_top?: #simpleArrayOfDoubles
 		description: "Melting layer top level (km) above mean sea level"
 		versions: ["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: melting_layer_top?: float64
 		description: "Melting layer top level (km) above mean sea level"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: melting_layer_top_A?: simpleArrayOfDoubles
+		keys: melting_layer_top_A?: #simpleArrayOfDoubles
 		description: "Melting layer top height above mean sea level. The size of this two-dimensional array corresponds with the values of where/nrays and where/nbins for that dataset."
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: melting_layer_bottom?: simpleArrayOfDoubles
+		keys: melting_layer_bottom?: #simpleArrayOfDoubles
 		description: "Melting layer bottom level (km) above mean sea level"
 		versions: ["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: melting_layer_bottom?: float64
 		description: "Melting layer bottom level (km) above mean sea level"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: melting_layer_bottom_A?: simpleArrayOfDoubles
+		keys: melting_layer_bottom_A?: #simpleArrayOfDoubles
 		description: "Melting layer bottom height above mean sea level. The size of this two-dimensional array corresponds with the values of where/nrays and where/nbins for that dataset"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: min?: float64
@@ -705,7 +696,7 @@ Hows: [
 		description: "Range attenuation correction (dBm)"
 	},
 	#HowVersionObject & {
-		keys: BBC?: ODIMBool
+		keys: BBC?: #ODIMBool
 		description: "“True” if bright-band correction applied, otherwise “False”"
 	},
 	#HowVersionObject & {
@@ -727,7 +718,7 @@ Hows: [
 	#HowVersionObject & {
 		keys: SNR_threshold?: float64
 		description: "Signal-to-noise ratio (dB) threshold"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: SNRHCT?: float64
@@ -760,25 +751,25 @@ Hows: [
 	#HowVersionObject & {
 		keys: SNRHC_threshold?: float64
 		description: "Signal-to-noise ratio (dB) co-polar H threshold"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: SNRHX_threshold?: float64
 		description: "Signal-to-noise ratio (dB) cross-polar H threshold"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 		groups: ["h"]
 	},
 	#HowVersionObject & {
 		keys: SNRVC_threshold?: float64
 		description: "Signal-to-noise ratio (dB) co-polar V threshold"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
 		keys: SNRVX_threshold?: float64
 		description: "Signal to noise ratio (dB) cross polar V threshold"
-		versions:    from["V2_4"]
+		versions:   _from["V2_4"]
 		groups: ["v"]
 	},
 	#HowVersionObject & {
@@ -790,69 +781,64 @@ Hows: [
 		description: "Minimum detectable signal (dBZ) at one km distance from the radar"
 	},
 	#HowVersionObject & {
-		keys: smoothed_PHIDP?: ODIMBool
+		keys: smoothed_PHIDP?: #ODIMBool
 		description: "“True” if PHIDP or UPHIDP has been smoothed, “False” if not"
-		versions:    from["V2_3"]
+		versions:    _from["V2_3"]
 	},
 
 	#HowVersionObject & {
-		keys: dealiased?: ODIMBool
+		keys: dealiased?: #ODIMBool
 		description: "– “True” if data has been dealiased, “False” if not"
 	},
 
 	#HowVersionObject & {
 		keys: base_1km_hc?: float64
 		description: "dBZ Reflectivity at 1 km for SNR = 0 dB noise-corrected H co-polar channel"
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: base_1km_vc?: float64
 		description: "dBZ Reflectivity at 1 km for SNR = 0 dB noise-corrected V co-polar channel"
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: altitude_agl?: float64
 		description: "meters Altitude of the center of rotation of the antenna above ground level"
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: NEZV_A?: simpleArrayOfDoubles
+		keys: NEZV_A?: #simpleArrayOfDoubles
 		description: "dBZ The total system noise expressed as the vertically-polarized reflectivity it would represent at one km distance from the radar. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: NEZH_A?: simpleArrayOfDoubles
+		keys: NEZH_A?: #simpleArrayOfDoubles
 		description: "dBZ The total system noise expressed as the horizontally-polarized reflectivity it would represent at one km distance from the radar. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset"
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: prt_ratio?: simpleArrayOfDoubles
+		keys: prt_ratio?: #simpleArrayOfDoubles
 		description: "– Ratio of prt/prt2. For dual/staggered prt mode. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
-		keys: prt?: simpleArrayOfDoubles
+		keys: prt?: #simpleArrayOfDoubles
 		description: "seconds Pulse repetition time. For staggered prt, also see prt_ratio. The size of this one-dimensional array corresponds with the value of where/nrays for that dataset."
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: frequency?: float64
 		description: "Hz Radar frequency"
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 	#HowVersionObject & {
 		keys: platform_type?: "fixed" | "vehicle" | "ship" | "aircraft" | "aircraft_fore”,“aircraft_aft" | "aircraft_tail" | "aircraft_belly" | "aircraft_roof" | "aircraft_nose" | "satellite_orbit" | "satellite_geostat"
 		description: "– Options are: “fixed”, “vehicle”, “ship”, “aircraft”, “aircraft_fore”,“aircraft_aft”, “aircraft_tail”, “aircraft_belly”, “aircraft_roof”, “aircraft_nose”, “satellite_orbit”, “satellite_geostat”. Assumed “fixed” if missing."
-		versions:    from["V2_4"]
+		versions:    _from["V2_4"]
 	},
 ]
 
-methodMap: {
-	for v in vs {
-		"\(v)": or([ for m in Methods if list.Contains(m.versions, v) {m.name}])
-	}
-}
-Methods: [
+_methods: [
 	#VersionEnum & {
 		name:        "NEAREST"
 		description: "Nearest neighbour or closest radar"
@@ -868,7 +854,7 @@ Methods: [
 	#VersionEnum & {
 		name:        "QAVERAGE"
 		description: "Quality-weighted average"
-		versions:    from["V2_3"]
+		versions:    _from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "RANDOM"
@@ -889,7 +875,7 @@ Methods: [
 	#VersionEnum & {
 		name:        "QMAXIMUM"
 		description: "Maximum quality"
-		versions:    from["V2_3"]
+		versions:    _from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "DOMAIN"

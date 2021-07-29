@@ -1,14 +1,14 @@
-singleSite: *false | bool @tag(single_site)
+_singleSite: bool | *false  @tag(single_site, type=bool)
 
 #SingleSourceObject: #HowVersionObject & {
-	versions: from["V2_4"]
+	versions: _from["V2_4"]
 }
-if singleSite {
+if _singleSite {
 
 	// Nyquist Interval can be omitted if no radial velocity data are available ie. not included as mandatory!
-	Hows: [
+	_hows: [
 		#SingleSourceObject & {
-			keys: simulated: ODIMBool
+			keys: simulated: #ODIMBool
 		},
 		#SingleSourceObject & {
 			keys: wavelength: float64 & >0
@@ -52,10 +52,10 @@ if singleSite {
 			groups: ["v"]
 		},
 		#SingleSourceObject & {
-			keys: startazA: simpleArrayOfDoubles
+			keys: startazA: #simpleArrayOfDoubles
 		},
 		#SingleSourceObject & {
-			keys: stopazA: simpleArrayOfDoubles
+			keys: stopazA: #simpleArrayOfDoubles
 		},
 		#SingleSourceObject & {
 			keys: scan_index: uint

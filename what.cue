@@ -5,7 +5,7 @@ import (
 	"list"
 )
 
-sources: [
+_sources: [
 	#VersionEnum & {
 		name:        "WMO"
 		description: "Combined WMO block and station number in the form A1bwnnnnn, or 0 if none assignede -- WMO:02954"
@@ -21,7 +21,7 @@ sources: [
 	#VersionEnum & {
 		name:        "NOD"
 		description: "Node according to the right column of Table. Mandatory to identify single-site data(v2.4) -- NOD:fianj"
-		versions:    from["V2_1"]
+		versions:    _from["V2_1"]
 	},
 	#VersionEnum & {
 		name:        "ORG"
@@ -38,14 +38,14 @@ sources: [
 	#VersionEnum & {
 		name:        "WIGOS"
 		description: "Combined WMO block and station number in the form A1bwnnnnn, or 0 if none assignede -- WIGOS:0-246-0-101234"
-		versions:    from["V2_3"]
+		versions:    _from["V2_3"]
 	},
 ]
-_sourceList:     strings.Join([ for s in sources if list.Contains(s.versions, v) {s.name}], "|")
-whatSourceRegex: "^(\(_sourceList)):([^,]+?)(,(\(_sourceList)):([^,]+))*$"
+_sourceList:      strings.Join([ for s in _sources if list.Contains(s.versions, _v) {s.name}], "|")
+#whatSourceRegex: "^(\(_sourceList)):([^,]+?)(,(\(_sourceList)):([^,]+))*$"
 
 //Table 2
-objects: [
+_objects: [
 	#VersionEnum & {
 		name:        "PVOL"
 		description: "Polar volume"
@@ -93,22 +93,7 @@ objects: [
 	},
 ]
 
-#DataWhat: close({
-	product?:   string //- According to Table 15
-	prodname?:  string //- Product name
-	quantity?:  string
-	prodpar?:   string  // - According to Table 16 for products. Only used for cartesian products.
-	startdate?: #Date   //Starting YYYYMMDD Year, Month, and Day for the product
-	starttime?: #Time   //Hour, Minute, and Second for the product
-	enddate?:   #Date   // Year, Month, and Day for the product
-	endtime?:   #Time   // Hour, Minute, and Second for the product
-	gain?:      float64 //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 1.0.
-	offset?:    float64 //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 0.0.
-	nodata?:    float64 //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float64 even if the data in question is in another format.
-	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
-})
-
-product: [
+_products: [
 	#VersionEnum & {
 		name:        "SCAN"
 		description: "A scan of polar data"
@@ -132,7 +117,7 @@ product: [
 	#VersionEnum & {
 		name:        "EBASE"
 		description: "Echo base"
-		versions:    from["V2_3"]
+		versions:    _from["V2_3"]
 	},
 	#VersionEnum & {
 		name:        "MAX"
@@ -149,7 +134,7 @@ product: [
 	#VersionEnum & {
 		name:        "SURF"
 		description: "Information valid at the Earth’s surface"
-		versions:    from["V2_2"]
+		versions:    _from["V2_2"]
 	},
 	#VersionEnum & {
 		name:        "COMP"

@@ -23,7 +23,7 @@ This validates the output file vs. the data-specification with entry in the `roo
 The project has a wrapping script that handles versions and allow overwriting the version to validate against (if one wish to validate a current file vs. another version than it actually has)
 ```shell
 > validate_odim_h5 [-as <version> | -single-site | -mixed-polarization] 
-            <file> [[--] <ignore fields>]
+            <file> [-- <ignore fields>]
 ```
 The script is purely to tie the two other products together (in the container).
 
@@ -59,11 +59,11 @@ I have now interpreted values to not be allowed to mix both `*H` and `*V` attrib
  - This project does not offer validation of cross-cutting terms like: adding "vertical" only `where`-attributes at `dataset` group level encompassing data that is not of type: "vertical".
  - only `how` and `where`-attribute groups inherit from their "parents".
  - v2.4 `how/pulsewidth` changed from µs to s. I have tried guarding this by validating the v2.4 pulsewidth to be between 0 s and 0.1 s, as pulsewidths are in the µs range (a very wide pulse, above 100 µs probably, would shadow echoes, see [wiki](https://en.wikipedia.org/wiki/Radar_signal_characteristics#Pulse_width)), if you try to express a value in µs after v2.4 you should correct this to seconds. 
+ - because of a limitation in `cue`(language) [(validation of a range of structs where one struct is a subset of another)](https://github.com/cue-lang/cue/discussions/1163) the object `/where` can validate as any object between the top level "polar" `where` group and the top level "vertical" `where` group
 
 ## TODO
- - restructure to validate without referencing `root` such that the `cue` command become: `cue vet <json> . -t version=<version> ...`
  - possibly create `cue` modules
- - tests for `cue` structure/rules
- - tests on hdf5 files?
+ - tests for `cue` -- structure/rules
+ - tests on an array of hdf5 files, or at least pre-compiled json-trees?
  - Docker container @ dockerhub
  - more data validation (double/int/string ranges)

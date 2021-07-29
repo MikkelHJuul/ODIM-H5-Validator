@@ -7,14 +7,14 @@ import (
 #Date: string & time.Format("20060102")
 #Time: string & time.Format("150405")
 
-simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float64 //also some sequences
-simpleArrayOfUInts:   uint | string & =~"^[0-9]+(,[0-9]+)*$"
-sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
+#simpleArrayOfDoubles: string & =~"^(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+))*$" | float64 //also some sequences
+#simpleArrayOfUInts:   uint | string & =~"^[0-9]+(,[0-9]+)*$"
+#sequenceOfPairs:      string & =~"^(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+)(,(|-)[0-9]+(.[0-9]+):(|-)[0-9]+(.[0-9]+))*$"
 
-sequence: string
+#sequence: string
 
 //nodes are the radar names... the enum is too large, and not bounded, I will not contemplate it currently
-sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
+#sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 
 //this is a bit special, but it's so static that it is deemed fine to keep here
 #Data: close({
@@ -22,7 +22,7 @@ sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 	IMAGE_VERSION: "1.2"
 })
 
-ODIMBool: "True" | "False"
+#ODIMBool: "True" | "False"
 
 //meta-types start here
 
@@ -34,11 +34,11 @@ ODIMBool: "True" | "False"
 #VersionEnum: close({
 	name:         string
 	description?: string
-	versions:     [...supportedVersions] | *vs
+	versions:     [...#supportedVersions] | *_vs
 })
 
-locs: ["top", "dataset", "data"] //quality?
-allowedLocations:                or(locs)
+_locs: ["top", "dataset", "data"] //quality?
+#allowedLocations:                or(_locs)
 
 //for generating object-sets via versions, just like #VersionEnum however for objects:
 //usage is pretty much the same, but has the extra added benefit of being able to filter on tags as well:
@@ -52,8 +52,8 @@ allowedLocations:                or(locs)
 #VersionObject: close({
 	keys:         _
 	description?: string
-	versions:     [...supportedVersions] | *vs
-	deprecated?: [...supportedVersions] //currently unused
-	locations:                          [...allowedLocations] | *locs
+	versions:     [...#supportedVersions] | *_vs
+	deprecated?: [...#supportedVersions] //currently unused
+	locations:                           [...#allowedLocations] | *_locs
 	groups: [...string]
 })

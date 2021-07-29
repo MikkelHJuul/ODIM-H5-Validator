@@ -9,7 +9,7 @@ help() {
   echo "dependencies: cue 0.4+, python 3.8+, jq 1.6, bash 4.4"
   echo
   echo "usage:"
-  echo "    validate_odim_h5 [-as <spec-vers>] [-single-site|-S] [-mixed-polarization|-M] <file> [[--] <ignore-keys>]"
+  echo "    validate_odim_h5 [-as <spec-vers>] [-single-site|-S] [-mixed-polarization|-M] <file> [-- <ignore-keys>]"
   echo
   echo "  spec-vers:                  ODIM Version to validate against fx. V2_0"
   echo "  ignore-keys:                list of attribute keys to ignore"
@@ -25,7 +25,6 @@ vFromConventions() {
   version="${override:-$version}"
 
   echo "$version"
-  [[ ! ${version+x} ]] && return 1
 }
 
 dotVersionText() {
@@ -61,7 +60,6 @@ while (( $# )) ; do
   *)
     file="$1"
     shift
-    [[ "$1" = '--' ]] && shift  # re-expand '--' to allow for both syntax's (with and without '--')
     break
     ;;
   esac
@@ -73,7 +71,7 @@ if ! [[ -f "$file" ]]; then
 fi
 f="$(mktemp)"
 
-if ! python3 ./hdf5_json.py "$file" "${1+-- $@}" > "$f"; then
+if ! python3 ./hdf5_json.py "$file" "$@" > "$f"; then
   err "error running python command"
 fi
 
@@ -83,10 +81,12 @@ fi
 
 dotVersion="$(dotVersionText "$version")"
 
+cue_param="-t version=$version $cue_param"
 #Inject version into the file
 replacement=".Conventions = \"ODIM_H5/$version\" | .what.version = \"H5rad $dotVersion\""
-if jq "$replacement" "$f" > test.json; then
-  cue vet --ignore test.json ./*.cue -d root -t version="$version" "$cue_param"
+if jq "$replacement" "$f" >| test.json; then
+  # shellcheck disable=SC2086  # double quoting messes things up
+  cue vet --ignore test.json ./*.cue $cue_param
 else
   err "could not replace version texts" >&2
 fi
