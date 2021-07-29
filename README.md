@@ -15,7 +15,7 @@ The command
 maps the hdf5 file metadata to stdout. 
 Pipe that to a file and read using `cue`:
 ```shell
-> cue vet [--ignore] <my_output_file_from_python_script> ./*.cue -d 'root' 
+> cue vet [--ignore] <my_output_file_from_python_script> ./*.cue 
         -t version=<version> [-t single_site=true] [-t mixed_polarization=true]
 ```
 This validates the output file vs. the data-specification with entry in the `root` object in [`odim_schema.cue`](odim_schema.cue).
@@ -53,10 +53,10 @@ I have now interpreted values to not be allowed to mix both `*H` and `*V` attrib
  - deprecations in the specification do not trigger warnings/errors
  - `/what/source` is validated through regex that allow defining the same key multiple times in the string without triggering an error
  - the data type `simpleArrayOfDoubles` is used for validation of `sequence`-types for versions before it was introduced, as it really is a subset of the sequence type but with more specificity, this way it is used to validate the v2.01 specification objects where a sequence was expected to follow the more specific syntax of `simple array [of doubles]`.
- - `where`-objects are interpreted to require all the stated keys, deprecated members are allowed to be missing (RHI specific member `angles`, since v2.3)
+ - `where`-objects are interpreted to require all the stated keys, deprecated members are allowed to be missing (RHI specific member `angles`, at v2.3)
  - `how` can in version 2.3 and up have allowed subgroups; generally the specification allow additional fields. The validation here does not! filter these using the python program's filter-mechanism. (this is safer than allowing anything, as the developer will then be required to double-check their errors; this weeds out spelling mistakes and earlier defined keys that were removed in the specification, requiring your validation to be specific about which fields to ignore)
  - the `dataset` (and `data` group) `what` object has no specifically "required" attributes; allowed attributes are all allowed to be missing independently of all other sibling attributes.
- - This project does not offer validation of cross-cutting terms like: adding "vertical" only `where`-attributes at `dataset` group level encompassing data that is not of type: "vertical".
+ - This project does not offer validation of cross-cutting terms like: adding "vertical" only `where`-attributes at `dataset` group level encompassing data that is not of type: "vertical". It is not clear to me if this is even wrong in the first place. This may however be buggy as inheritance would combine into undefined objects.
  - only `how` and `where`-attribute groups inherit from their "parents".
  - v2.4 `how/pulsewidth` changed from µs to s. I have tried guarding this by validating the v2.4 pulsewidth to be between 0 s and 0.1 s, as pulsewidths are in the µs range (a very wide pulse, above 100 µs probably, would shadow echoes, see [wiki](https://en.wikipedia.org/wiki/Radar_signal_characteristics#Pulse_width)), if you try to express a value in µs after v2.4 you should correct this to seconds. 
  - because of a limitation in `cue`(language) [(validation of a range of structs where one struct is a subset of another)](https://github.com/cue-lang/cue/discussions/1163) the object `/where` can validate as any object between the top level "polar" `where` group and the top level "vertical" `where` group
