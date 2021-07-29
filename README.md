@@ -66,3 +66,4 @@ I have now interpreted values to not be allowed to mix both `*H` and `*V` attrib
  - tests for `cue` structure/rules
  - tests on hdf5 files?
  - Docker container @ dockerhub
+ - more data validation (double/int/string ranges)
