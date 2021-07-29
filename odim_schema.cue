@@ -84,10 +84,10 @@ root: {
 	[name=#DatasetName]: [name=#DataName]: how?:    #how
 	[name=#DatasetName]: [name=#QualityName]: how?: #how
 
-	where?: topWhere
-	[name=#DatasetName]: where?: datasetWhere
-	[name=#DatasetName]: [name=#DataName]: where?:    dataWhere
-	[name=#DatasetName]: [name=#QualityName]: where?: dataWhere
+	where?: or([ for w in _whereAggr["top"] {close({w})}])
+	[name=#DatasetName]: where?: or([ for w in _whereAggr["dataset"] {close({w})}])
+	[name=#DatasetName]: [name=#DataName]: where?:    or([ for w in _whereAggr["data"] {close({w})}])
+	[name=#DatasetName]: [name=#QualityName]: where?: or([ for w in _whereAggr["data"] {close({w})}])
 
 	[name=#DatasetName]: what?: #VersionDataWhat
 	[name=#DatasetName]: [name=#DataName]: what?:    #VersionDataWhat
