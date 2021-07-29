@@ -1,4 +1,4 @@
-#ODIM HDF5 Validator
+# ODIM HDF5 Validator
 [ODIM](https://www.eumetnet.eu/glossary/odim/) ([OPERA](https://www.eumetnet.eu/glossary/opera/) Data Information Model) is a specification for how to store Radar data in an HDF5 file (and BUFR).
 This project has a mapping routine in python and a write-up of the ODIM specification in [CUE](http://cuelang.org/).
 
