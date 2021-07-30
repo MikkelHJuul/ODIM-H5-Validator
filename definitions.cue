@@ -35,7 +35,7 @@ where?: #DataWhere
 
 #prod: or([ for p in _products if list.Contains(p.versions, _v) {p.name}])
 
-#What: close({
+#What: {
 	product?:   #prod //- According to Table 15
 	prodname?:  string //- Product name
 	quantity?:  #quant
@@ -48,7 +48,7 @@ where?: #DataWhere
 	offset?:    float64 //- Coefficient in quantity_value = offset + gain × raw_value used to convert to physical unit. Default value is 0.0.
 	nodata?:    float64 //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float64 even if the data in question is in another format.
 	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
-})
+}
 
 _mixedPol: bool | *false  @tag(mixed_polarization, type=bool)
 

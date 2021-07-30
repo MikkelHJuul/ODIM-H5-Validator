@@ -17,10 +17,10 @@ import (
 #sequenceOfNodes: =~"[a-z]{5}(,[a-z]{5})*"
 
 //this is a bit special, but it's so static that it is deemed fine to keep here
-#Data: close({
+#Data: {
 	CLASS:         "IMAGE"
 	IMAGE_VERSION: "1.2"
-})
+}
 
 #ODIMBool: "True" | "False"
 
@@ -31,11 +31,11 @@ import (
 //use something like:
 //   //someV2_0Enum: or([for e in #SomeEnum if list.Contains(e.versions, "V2_0") { e.name } ])
 //example in [quantity](quantity.cue)
-#VersionEnum: close({
+#VersionEnum: {
 	name:         string
 	description?: string
 	versions:     [...#supportedVersions] | *_vs
-})
+}
 
 _locs: ["top", "dataset", "data"] //quality?
 #allowedLocations:                or(_locs)
@@ -49,11 +49,11 @@ _locs: ["top", "dataset", "data"] //quality?
 //  //}
 // this structure holds the logic to construct the validation object structure of a versioned root object holding grouped OR-structures
 // the keys itself could hold all the data of the group, but splitting this makes the data structure more dynamic and less painful on removal/changes.
-#VersionObject: close({
+#VersionObject: {
 	keys:         _
 	description?: string
 	versions:     [...#supportedVersions] | *_vs
 	deprecated?: [...#supportedVersions] //currently unused
 	locations:                           [...#allowedLocations] | *_locs
 	groups: [...string]
-})
+}
