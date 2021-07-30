@@ -2,9 +2,9 @@ package odim_hdf5
 
 import "list"
 
-#TopWhere:     or([for w in _whereAggr["top"] {close({w})}])
-#DatasetWhere: or([for w in _whereAggr["dataset"] {close({w})}])
-#DataWhere:    or([for w in _whereAggr["data"] {close({w})}])
+#TopWhere:     or([ for w in _whereAggr["top"] {close({w})}])
+#DatasetWhere: or([ for w in _whereAggr["dataset"] {close({w})}])
+#DataWhere:    or([ for w in _whereAggr["data"] {close({w})}])
 
 _whereAggr: {
 	for w in _whereObjects if list.Contains(w.versions, _v) for l in w.locations for g in w.groups {
@@ -22,37 +22,37 @@ _whereGroupNames: ["polar", "vertical", "cross-section", "geo", "RHI"]
 }
 
 _whereObjects: [
-	#WhereObject & { //revert add polar
+	#WhereObject & {//revert add polar
 		keys: lat: float64 & >0
 		description: "Latitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["vertical", "RHI"]
 	},
-	#WhereObject & { //revert add polar
+	#WhereObject & {//revert add polar
 		keys: lon: float64 & >0
 		description: "Longitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["vertical", "RHI"]
 	},
-	#WhereObject & { //revert add polar
+	#WhereObject & {//revert add polar
 		keys: height: float64
 		description: "Height of the centre of the antenna in meters above sea level."
 		groups: ["vertical"]
 	},
-		#WhereObject & {//revert
+	#WhereObject & {//revert
 		keys: lat: float64 & >0
 		description: "Latitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["polar"]
 		locations: ["dataset", "data"]
 	},
-	#WhereObject & { //revert
+	#WhereObject & {//revert
 		keys: lon: float64 & >0
 		description: "Longitude position of the radar antenna (degrees). Fractions of a degree are given in decimal notation"
 		groups: ["polar"]
 		locations: ["dataset", "data"]
 	},
-	#WhereObject & { //revert
+	#WhereObject & {//revert
 		keys: height: float64
 		description: "Height of the centre of the antenna in meters above sea level."
-		groups: ["polar",]
+		groups: ["polar"]
 		locations: ["dataset", "data"]
 	},
 	#WhereObject & {
@@ -219,39 +219,39 @@ _whereObjects: [
 		description: "Latitude of the lower right corner of the lower right pixel"
 		groups: ["geo"]
 	},
-	#WhereObject & { //revert add vertical
+	#WhereObject & {//revert add vertical
 		keys: minheight: float64
 		description: "Minimum height in meters above mean sea level"
 		groups: ["cross-section", "RHI"]
 	},
-	#WhereObject & { //revert add vertical
+	#WhereObject & {//revert add vertical
 		keys: maxheight: float64
 		description: "Maximum height in meters above mean sea level"
 		groups: ["cross-section", "RHI"]
 	},
-		#WhereObject & { //revert
+	#WhereObject & {//revert
 		keys: minheight: float64
 		description: "Minimum height in meters above mean sea level"
 		groups: ["vertical"]
-				locations: ["dataset", "data"]
+		locations: ["dataset", "data"]
 	},
-	#WhereObject & { //revert
+	#WhereObject & {//revert
 		keys: maxheight: float64
 		description: "Maximum height in meters above mean sea level"
 		groups: ["vertical"]
-				locations: ["dataset", "data"]
+		locations: ["dataset", "data"]
 	},
-			#WhereObject & {
+	#WhereObject & {
 		keys: minheight?: float64
 		description: "Minimum height in meters above mean sea level"
 		groups: ["vertical"]
-				locations: ["top"]
+		locations: ["top"]
 	},
 	#WhereObject & {
 		keys: maxheight?: float64
 		description: "Maximum height in meters above mean sea level"
 		groups: ["vertical"]
-				locations: ["top"]
+		locations: ["top"]
 	},
 	#WhereObject & {
 		keys: az_angle: float64
@@ -275,25 +275,25 @@ _whereObjects: [
 		groups: ["RHI"]
 		versions: ["V2_3"]
 	},
-	#WhereObject & { // revert
+	#WhereObject & {// revert
 		keys: interval?: float64
 		description: "Vertical distance (m) between height intervals, or 0.0 if variable"
 		groups: ["vertical"]
 		locations: ["top"]
 	},
-		#WhereObject & { //revert remove locations
+	#WhereObject & {//revert remove locations
 		keys: interval: float64
 		description: "Vertical distance (m) between height intervals, or 0.0 if variable"
 		groups: ["vertical"]
 		locations: ["dataset", "data"]
 	},
-		#WhereObject & {  //revert remove locations
+	#WhereObject & {//revert remove locations
 		keys: levels: int & >0
 		description: "Number of points in the profile"
 		groups: ["vertical"]
 		locations: ["dataset", "data"]
 	},
-	#WhereObject & { // revert
+	#WhereObject & {// revert
 		keys: levels?: int & >0
 		description: "Number of points in the profile"
 		groups: ["vertical"]

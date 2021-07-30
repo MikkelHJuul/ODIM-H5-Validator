@@ -8,14 +8,14 @@ import "list"
 
 #Group: {
 	what?: #What
-	how?: #How
+	how?:  #How
 }
 
 #DatasetGroup: {
 	#Group
 	[Name=#DataName]:    #DataGroup
 	[Name=#QualityName]: #QualityGroup
-	where?: #DatasetWhere
+	where?:              #DatasetWhere
 }
 
 #DataGroup: {
@@ -25,7 +25,7 @@ import "list"
 
 #QualityGroup: {
 	#Group
-where?: #DataWhere
+	where?:   #DataWhere
 	data?:    #Data
 	palette?: _ // I have no idea what the structure is of this item
 	legend?:  _ // I have no idea what the structure is of this item
@@ -36,7 +36,7 @@ where?: #DataWhere
 #prod: or([ for p in _products if list.Contains(p.versions, _v) {p.name}])
 
 #What: {
-	product?:   #prod //- According to Table 15
+	product?:   #prod  //- According to Table 15
 	prodname?:  string //- Product name
 	quantity?:  #quant
 	prodpar?:   string  // - According to Table 16 for products. Only used for cartesian products.
@@ -50,14 +50,14 @@ where?: #DataWhere
 	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
 }
 
-_mixedPol: bool | *false  @tag(mixed_polarization, type=bool)
+_mixedPol: bool | *false @tag(mixed_polarization, type=bool)
 
 #How: {
-		if _mixedPol {
-			close({for h in _hows if list.Contains(h.versions, _v) {h.keys}})
-		}
-		if !_mixedPol {
-			 close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "h") {h.keys}}) | //horizontal or vertical hows!
-				close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "v") {h.keys}})
-		}
+	if _mixedPol {
+		close({for h in _hows if list.Contains(h.versions, _v) {h.keys}})
+	}
+	if !_mixedPol {
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "h") {h.keys}}) | //horizontal or vertical hows!
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "v") {h.keys}})
+	}
 }
