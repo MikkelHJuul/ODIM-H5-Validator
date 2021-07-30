@@ -97,7 +97,7 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: scan_index?: uint
-		description: "Which scan this is in the temporal sequence (starting with 1) of the total float64 of scans comprising the volume."
+		description: "Which scan this is in the temporal sequence (starting with 1) of the total number of scans comprising the volume."
 		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
@@ -113,12 +113,12 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: startazA?: #simpleArrayOfDoubles
-		description: "Azimuthal start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Azimuthal start angles (degrees) used for each gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
 		keys: stopazA?: #simpleArrayOfDoubles
-		description: "Azimuthal stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Azimuthal stop angles (degrees) used for each gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
@@ -343,7 +343,7 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: TXpower?: #simpleArrayOfDoubles
-		description: "Transmitted peak power in kW at the calibration reference plane. The values given are average powers over all transmitted pulses in each azimuth gate. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Transmitted peak power in kW at the calibration reference plane. The values given are average powers over all transmitted pulses in each azimuth gate. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions:   _from["V2_1"]
 	},
 	#HowVersionObject & {
@@ -403,7 +403,7 @@ _hows: [
 
 	#HowVersionObject & {
 		keys: elangles?: #simpleArrayOfDoubles
-		description: "Elevation angles (degrees above the horizon) used for each azimuth gate in an “intelligent” scan that e.g. follows the horizon. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Elevation angles (degrees above the horizon) used for each azimuth gate in an “intelligent” scan that e.g. follows the horizon. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions: ["V2_0", "V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
@@ -420,14 +420,14 @@ _hows: [
 
 	#HowVersionObject & {
 		keys: startazT?: #simpleArrayOfDoubles
-		description: "Acquisition start times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition start times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 
 	#HowVersionObject & {
 		keys: stopazT?: #simpleArrayOfDoubles
-		description: "Acquisition stop times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition stop times for each azimuth gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_1", "V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
@@ -443,35 +443,35 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: startelA?: #simpleArrayOfDoubles
-		description: "Elevational start angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Elevational start angles (degrees) used for each gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions:   _from["V2_2"]
 	},
 	#HowVersionObject & {
 		keys: stopelA?: #simpleArrayOfDoubles
-		description: "Elevational stop angles (degrees) used for each gate in a scan. The float64 of values in this array corresponds with the value of where/nrays for that dataset."
+		description: "Elevational stop angles (degrees) used for each gate in a scan. The number of values in this array corresponds with the value of where/nrays for that dataset."
 		versions:   _from["V2_2"]
 	},
 
 	#HowVersionObject & {
 		keys: startelT?: #simpleArrayOfDoubles
-		description: "Acquisition start times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition start times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: stopelT?: #simpleArrayOfDoubles
-		description: "Acquisition stop times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition stop times for each elevation gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions: ["V2_2", "V2_3"]
 		deprecated: ["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: startT?: #simpleArrayOfDoubles
-		description: "Acquisition start times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition start times for each gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
 		keys: stopT?: #simpleArrayOfDoubles
-		description: "Acquisition stop times for each gate in the sector or scan, in seconds past the 1970 epoch. The float64 of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
+		description: "Acquisition stop times for each gate in the sector or scan, in seconds past the 1970 epoch. The number of values in this array corresponds with the value of where/nrays for that dataset. The required precision is to the millisecond."
 		versions:   _from["V2_3"]
 	},
 
@@ -491,7 +491,7 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: arotation?: #simpleArrayOfDoubles
-		description: "Antenna rotation speed in degrees/s (positive for clockwise, negative for counter-clockwise). The float64 of values in this array corresponds with the values of how/angles described above."
+		description: "Antenna rotation speed in degrees/s (positive for clockwise, negative for counter-clockwise). The number of values in this array corresponds with the values of how/angles described above."
 	},
 	#HowVersionObject & {
 		keys: nodes?: #sequenceOfNodes | =~"[a-z]{3}(,[a-z]{3})*" //list of three letter (no country) nodes, not mixed, allow forward-compatibility
@@ -525,7 +525,7 @@ _hows: [
 	},
 	#HowVersionObject & {
 		keys: sample_size?: #simpleArrayOfUInts
-		description: "Number of valid data points in a level of a vertical profile. The float64 of values in this array corresponds with the value of where/levels for that dataset. dealiased boolean “True” if data has been dealiased, “False” if not"
+		description: "Number of valid data points in a level of a vertical profile. The number of values in this array corresponds with the value of where/levels for that dataset. dealiased boolean “True” if data has been dealiased, “False” if not"
 		versions:   _from["V2_3"]
 	},
 	#HowVersionObject & {
