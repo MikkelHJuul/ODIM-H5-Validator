@@ -12,7 +12,7 @@ _howGroups: ["h", "v"]
 
 _singleSite: bool | *false @tag(single_site, type=bool)
 
-#SingleSourceObject: #HowVersionObject & {
+#SingleSiteObject: #HowVersionObject & {
 	versions: _from["V2_4"]
 }
 
@@ -845,90 +845,90 @@ _hows: [
 
 		// Nyquist Interval can be omitted if no radial velocity data are available ie. not included as mandatory!
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: simulated: #ODIMBool
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: wavelength: float64 & >0
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: frequency: float64 & >0
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: pulsewidth: float64
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: RXlossH: float64 & >0
 			groups: ["h"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: RXlossV: float64 & >0
 			groups: ["v"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: antgainH: float64 & >0
 			groups: ["h"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: antgainV: float64 & >0
 			groups: ["v"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: beamwH: float64 & >=0 & <=360
 			groups: ["h"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: beamwV: float64 & >=0 & <=360
 			groups: ["v"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: radconstH: float64 & >0
 			groups: ["h"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: radconstV: float64 & >0
 			groups: ["v"]
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: startazA: #simpleArrayOfDoubles
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: stopazA: #simpleArrayOfDoubles
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: scan_index: uint
 		}
 	},
 	if _singleSite {
-		#SingleSourceObject & {
+		#SingleSiteObject & {
 			keys: scan_count: uint
 		}
 	},
