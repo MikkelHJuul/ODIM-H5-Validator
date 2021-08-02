@@ -49,15 +49,3 @@ import "list"
 	nodata?:    float64 //- Raw value used to denote areas void of data (never radiated). Note that this Attribute is always a float64 even if the data in question is in another format.
 	undetect?:  float64 //- Raw value used to denote areas below the measurement detection threshold (radiated but nothing detected). Note that this Attribute is always a float64 even if the data in question is in another format.
 }
-
-_mixedPol: bool | *false @tag(mixed_polarization, type=bool)
-
-#How: {
-	if _mixedPol {
-		close({for h in _hows if list.Contains(h.versions, _v) {h.keys}})
-	}
-	if !_mixedPol {
-		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "h") {h.keys}}) | //horizontal or vertical hows!
-		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "v") {h.keys}})
-	}
-}

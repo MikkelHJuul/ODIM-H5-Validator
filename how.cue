@@ -2,6 +2,26 @@ package odim_hdf5
 
 import "list"
 
+#polarizations: "unset" | "mixed" | "h" | "v" | "horizontal" | "vertical"
+_polarization: *"unset" | #polarizations @tag(polarization)
+
+#How: {
+	if _polarization == "mixed" {
+		close({for h in _hows if list.Contains(h.versions, _v) {h.keys}})
+	}
+	if _polarization == "unset" {
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "h") {h.keys}}) | //horizontal or vertical hows!
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "v") {h.keys}})
+	}
+		if _polarization == "h" || _polarization == "horizontal" {
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "h") {h.keys}})
+	}
+		if _polarization == "v" || _polarization == "vertical"  {
+		close({for h in _hows if list.Contains(h.versions, _v) && list.Contains(h.groups, "v") {h.keys}})
+	}
+}
+
+
 _howGroups: ["h", "v"]
 #allowedHowGroups: or(_howGroups)
 #HowVersionObject: #VersionObject & {
