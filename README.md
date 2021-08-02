@@ -22,7 +22,7 @@ This validates the output file vs. the data-specification with entry in the `roo
 
 The project has a wrapping script that handles versions and allow overwriting the version to validate against (if one wish to validate a current file vs. another version than it actually has)
 ```shell
-> validate_odim_h5 [-as <version> | -single-site | -mixed-polarization] 
+> validate_odim_h5 [-as <version> | -single-site | --polarization <mixed|horizontal|vertical>] 
             <file> [-- <ignore fields>]
 ```
 The script is purely to tie the two other products together (in the container).

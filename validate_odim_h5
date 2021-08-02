@@ -50,9 +50,9 @@ while (( $# )) ; do
     cue_param="$cue_param"' -t single_site=true'
     shift
     ;;
-  -mixed-polarization|--mixed-polarization|-M)
-    cue_param="$cue_param"' -t mixed_polarization=true'
-    shift
+  -polarization|--polarization|-P)
+    cue_param="$cue_param"' -t polarization='"$2"
+    shift 2
     ;;
   --)
     help >&2  # this shouldn't be reachable
